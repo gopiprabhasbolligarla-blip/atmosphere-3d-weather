@@ -1,0 +1,11 @@
+{
+  "name": "weather-dashboard-suite",
+  "version": "1.0.0",
+  "description": "Clean modern Weather Dashboard split into Frontend, Backend, and Services",
+  "scripts": {
+    "dev": "npm --prefix frontend run dev",
+    "dev:frontend": "npm --prefix frontend run dev",
+    "dev:backend": "npm --prefix backend run dev",
+    "build": "npm --prefix frontend run build"
+  }
+}
