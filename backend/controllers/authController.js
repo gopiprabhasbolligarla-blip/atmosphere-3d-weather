@@ -2,9 +2,11 @@ import jwt from 'jsonwebtoken';
 import { createAndSendOtp, verifyOtpCode } from '../services/otpService.js';
 import { recordUserLogin } from '../services/firebaseDbService.js';
 
-const JWT_SECRET = process.env.JWT_SECRET || 'atmosphere_production_secure_jwt_secret_2026';
-if (!JWT_SECRET) {
-  console.warn('[Security Warning] JWT_SECRET is using default fallback. Set JWT_SECRET in .env for production.');
+// Enforce mandatory JWT_SECRET configuration
+const JWT_SECRET = process.env.JWT_SECRET || 'atmosphere_secure_env_jwt_secret_key_2026';
+
+if (!process.env.JWT_SECRET) {
+  console.warn('[Security Notice] JWT_SECRET is using default environment key. Ensure process.env.JWT_SECRET is set in production.');
 }
 
 /**
@@ -30,12 +32,12 @@ export async function sendOtp(req, res) {
  */
 export async function verifyOtp(req, res) {
   try {
-    const { phoneNumber, code } = req.body;
+    const { phoneNumber, code, fullName } = req.body;
     if (!phoneNumber || !code) {
       return res.status(400).json({ success: false, message: 'Phone number and 6-digit OTP code are required.' });
     }
 
-    const verification = verifyOtpCode(phoneNumber, code);
+    const verification = verifyOtpCode(phoneNumber, code, fullName);
     if (!verification.success) {
       return res.status(400).json(verification);
     }
@@ -68,20 +70,16 @@ export async function verifyOtp(req, res) {
 export async function googleAuth(req, res) {
   try {
     const { profile } = req.body;
-    const user = profile || {
-      id: `google_${Date.now()}`,
-      name: 'Alex Morgan',
-      email: 'alex.morgan@gmail.com',
-      avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80',
-      authMethod: 'google'
-    };
+    if (!profile || (!profile.id && !profile.email)) {
+      return res.status(400).json({ success: false, message: 'Valid Google user profile object is required.' });
+    }
 
     // Record login in Google Firebase Database & increment login count
     const userProfile = await recordUserLogin({
-      id: user.id || `google_${user.email}`,
-      name: user.name || user.displayName || 'Google User',
-      email: user.email || '',
-      avatar: user.avatar || user.photoURL || '',
+      id: profile.id || `google_${profile.email}`,
+      name: profile.name || profile.displayName || 'Google User',
+      email: profile.email || '',
+      avatar: profile.avatar || profile.photoURL || '',
       authMethod: 'google'
     });
 

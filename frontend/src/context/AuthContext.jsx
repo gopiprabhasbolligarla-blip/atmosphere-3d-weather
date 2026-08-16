@@ -115,15 +115,6 @@ export function AuthProvider({ children }) {
     // Call Node Express Backend API first
     const backendRes = await sendBackendOtp(phoneNumber);
     if (backendRes?.success) {
-      if (backendRes.code) {
-        window.dispatchEvent(new CustomEvent('simulated_sms_received', {
-          detail: {
-            phoneNumber,
-            code: backendRes.code,
-            message: backendRes.message
-          }
-        }));
-      }
       return backendRes;
     }
 
@@ -145,9 +136,9 @@ export function AuthProvider({ children }) {
     return sendMobileOTP(phoneNumber);
   };
 
-  const verifyMobileOTPAndLogin = async (phoneNumber, code, useRealSms = false) => {
+  const verifyMobileOTPAndLogin = async (phoneNumber, code, useRealSms = false, fullName = '') => {
     // 1. Try Backend REST API verification first
-    const backendRes = await verifyBackendOtp(phoneNumber, code);
+    const backendRes = await verifyBackendOtp(phoneNumber, code, fullName);
     if (backendRes?.success && backendRes.user) {
       setUser(backendRes.user);
       setIsAuthModalOpen(false);

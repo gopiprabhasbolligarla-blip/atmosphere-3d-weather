@@ -1,20 +1,18 @@
+import crypto from 'crypto';
+
 /**
  * Backend OTP Service
- * Handles secure 6-digit OTP generation, session storage, and SMS gateway dispatch.
+ * Handles cryptographically secure 6-digit OTP generation, session storage, and SMS gateway dispatch.
  */
 
 // Active OTP store: phoneNumber -> { code, expiresAt, createdTime }
 const otpStore = new Map();
 
 /**
- * Generate 6-digit random OTP
+ * Generate cryptographically secure 6-digit random OTP
  */
 export function generateOtpCode() {
-  let code = '';
-  for (let i = 0; i < 6; i++) {
-    code += Math.floor(Math.random() * 10);
-  }
-  return code;
+  return crypto.randomInt(100000, 1000000).toString();
 }
 
 /**
@@ -32,7 +30,8 @@ export async function createAndSendOtp(phoneNumber) {
     createdTime: Date.now()
   });
 
-  console.log(`[Backend OTP Service] Generated OTP ${code} for ${cleanPhone}`);
+  // Log generation without exposing raw OTP code in server logs
+  console.log(`[Backend OTP Service] OTP generated and session initialized for ${cleanPhone}`);
 
   let smsSent = false;
   let providerUsed = 'simulated';
@@ -78,8 +77,9 @@ export async function createAndSendOtp(phoneNumber) {
  * Verify OTP
  * @param {string} phoneNumber 
  * @param {string} inputCode 
+ * @param {string} [fullName]
  */
-export function verifyOtpCode(phoneNumber, inputCode) {
+export function verifyOtpCode(phoneNumber, inputCode, fullName = '') {
   const cleanPhone = phoneNumber.replace(/[\s\-\(\)]/g, '');
   const session = otpStore.get(cleanPhone);
 
@@ -99,11 +99,13 @@ export function verifyOtpCode(phoneNumber, inputCode) {
   // Clear session on successful verification
   otpStore.delete(cleanPhone);
 
+  const userName = fullName && fullName.trim() ? fullName.trim() : `User ${cleanPhone.slice(-4)}`;
+
   return {
     success: true,
     user: {
       id: `usr_${cleanPhone.slice(-4)}_${Date.now().toString().slice(-4)}`,
-      name: `User ${cleanPhone.slice(-4)}`,
+      name: userName,
       mobile: cleanPhone,
       authMethod: 'mobile_otp',
       avatar: `https://api.dicebear.com/7.x/bottts/svg?seed=${cleanPhone}`

@@ -88,7 +88,7 @@ export const AuthModal = ({ isOpen, onClose, initialAutoFillCode, isAutoPrompted
     setLoading(true);
 
     try {
-      const res = await requestMobileOTP(fullPhoneString, useRealSms);
+      const res = await requestMobileOTP(fullPhoneString, useRealSms, fullName);
       if (res?.success || res?.confirmationResult) {
         setStep('otp');
         setTimer(60);
@@ -96,7 +96,7 @@ export const AuthModal = ({ isOpen, onClose, initialAutoFillCode, isAutoPrompted
         if (useRealSms && isFirebaseConfigured) {
           setSuccessMsg(`Real SMS code sent to your phone ${fullPhoneString}!`);
         } else {
-          setSuccessMsg(`OTP sent to ${fullPhoneString}! Check incoming SMS banner on screen.`);
+          setSuccessMsg(`OTP sent to ${fullPhoneString}! Check incoming SMS.`);
         }
         
         // Focus first OTP input box
@@ -161,7 +161,7 @@ export const AuthModal = ({ isOpen, onClose, initialAutoFillCode, isAutoPrompted
     setLoading(true);
 
     try {
-      const result = await verifyMobileOTPAndLogin(fullPhoneString, code, useRealSms);
+      const result = await verifyMobileOTPAndLogin(fullPhoneString, code, useRealSms, fullName);
       setLoading(false);
 
       if (result.success) {
@@ -176,12 +176,12 @@ export const AuthModal = ({ isOpen, onClose, initialAutoFillCode, isAutoPrompted
   };
 
   // Resend OTP handler
-  const handleResend = () => {
+  const handleResend = async () => {
     if (isTimerActive) return;
     setError('');
     setOtpDigits(['', '', '', '', '', '']);
     try {
-      requestMobileOTP(fullPhoneString, useRealSms);
+      await requestMobileOTP(fullPhoneString, useRealSms, fullName);
       setTimer(60);
       setIsTimerActive(true);
       setSuccessMsg('A new OTP has been requested!');

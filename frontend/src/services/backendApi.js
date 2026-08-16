@@ -27,13 +27,14 @@ export async function sendBackendOtp(phoneNumber) {
  * Verify OTP request to Express backend
  * @param {string} phoneNumber 
  * @param {string} code 
+ * @param {string} [fullName]
  */
-export async function verifyBackendOtp(phoneNumber, code) {
+export async function verifyBackendOtp(phoneNumber, code, fullName = '') {
   try {
     const res = await fetch(`${BACKEND_URL}/auth/verify-otp`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ phoneNumber, code })
+      body: JSON.stringify({ phoneNumber, code, fullName })
     });
     const data = await res.json();
     return data;
