@@ -10,6 +10,7 @@ lerna-debug.log*
 # Diagnostic data
 .gemini/
 shipready_results/
+backend/test_auth_flow.js
 
 # Dependency directories
 node_modules/

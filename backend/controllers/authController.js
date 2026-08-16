@@ -1,12 +1,24 @@
 import jwt from 'jsonwebtoken';
+import dotenv from 'dotenv';
+import path from 'path';
+import { fileURLToPath } from 'url';
 import { createAndSendOtp, verifyOtpCode } from '../services/otpService.js';
 import { recordUserLogin } from '../services/firebaseDbService.js';
 
-// Enforce mandatory JWT_SECRET configuration
-const JWT_SECRET = process.env.JWT_SECRET || 'atmosphere_secure_env_jwt_secret_key_2026';
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+dotenv.config({ path: path.join(__dirname, '../.env') });
+dotenv.config();
 
-if (!process.env.JWT_SECRET) {
-  console.warn('[Security Notice] JWT_SECRET is using default environment key. Ensure process.env.JWT_SECRET is set in production.');
+/**
+ * Retrieve mandatory JWT Secret from environment variables
+ */
+function getJwtSecret() {
+  const secret = process.env.JWT_SECRET;
+  if (!secret) {
+    throw new Error('[Security Error] JWT_SECRET is not configured in .env environment file.');
+  }
+  return secret;
 }
 
 /**
@@ -45,10 +57,10 @@ export async function verifyOtp(req, res) {
     // Record login & track total sign-in count in Firebase
     const userProfile = await recordUserLogin(verification.user);
 
-    // Generate JWT Token
+    // Generate JWT Token using strictly required environment secret
     const token = jwt.sign(
       { id: userProfile.id, mobile: userProfile.mobile },
-      JWT_SECRET,
+      getJwtSecret(),
       { expiresIn: '7d' }
     );
 
@@ -83,7 +95,7 @@ export async function googleAuth(req, res) {
       authMethod: 'google'
     });
 
-    const token = jwt.sign({ id: userProfile.id, email: userProfile.email }, JWT_SECRET, { expiresIn: '7d' });
+    const token = jwt.sign({ id: userProfile.id, email: userProfile.email }, getJwtSecret(), { expiresIn: '7d' });
 
     return res.status(200).json({
       success: true,
