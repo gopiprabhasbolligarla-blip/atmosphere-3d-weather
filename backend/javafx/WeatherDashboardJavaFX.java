@@ -89,4 +89,8 @@ public class WeatherDashboardJavaFX extends Application {
     public static void main(String[] args) {
         launch(args);
     }
+
+    public FirebaseBackendController getFirebaseController() {
+        return firebaseController;
+    }
 }

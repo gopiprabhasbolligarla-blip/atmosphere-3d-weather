@@ -65,7 +65,6 @@ export async function createAndSendOtp(phoneNumber) {
   return {
     success: true,
     phoneNumber: cleanPhone,
-    code, // Included for dev testing
     expiresAt,
     smsSent,
     providerUsed,

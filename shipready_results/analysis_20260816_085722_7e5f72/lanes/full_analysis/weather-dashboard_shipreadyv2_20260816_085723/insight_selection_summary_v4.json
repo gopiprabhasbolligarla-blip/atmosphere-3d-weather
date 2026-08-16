@@ -1,0 +1,124 @@
+{
+  "schema_version": "shipready.critical_business_insight_selector.v4",
+  "rules_version": "proof_obligations.v1.reporting_ceiling.v4",
+  "generated_at": "2026-08-16T03:28:22.837294+00:00",
+  "repository_id": "repository_ae6e29beaaedcf4f",
+  "repository_name": "weather-dashboard",
+  "input_hashes": {
+    "normalized_business_paths": "28ed91d9e2cfc766567cda41eafc9cd889a540a2595254eafe99e2516b965e3c",
+    "business_path_coverage": "372183bb87eb8898cad64acf63e6dc8288f6bd75c6132cd89788a0e39ea6a8d1",
+    "resolved_graph": "8af7250d9837b70bb0a30b423375b0107d42b62af9c7b21e8db961fd5dbde023",
+    "prepared_pass1_inputs": "6624d7d9fc40bb80a4ddf362c1c3b53d6b87bd558fc970e1c1cb2e67835154cf",
+    "universal_rules_yaml_if_present": "4aa10f8c581100190c24365fa4188862c49738403db36c6c298ba15c54067ab7"
+  },
+  "paths_examined": 3,
+  "candidates_nominated": 12,
+  "eligible_strong": 0,
+  "eligible_bounded": 4,
+  "eligible_not_selected": 2,
+  "investigation_gaps": 4,
+  "rejected": 4,
+  "duplicates_or_variants": 0,
+  "selected": 2,
+  "selected_reporting_ceiling_counts": {
+    "NOT_REPORTABLE": 0,
+    "WORKFLOW_OBSERVATION": 0,
+    "INVESTIGATION_HYPOTHESIS": 0,
+    "EVIDENCE_BACKED_RISK": 2,
+    "CONFIRMED_FLAW": 0
+  },
+  "reporting_contract": {
+    "category_levels": {
+      "NOT_REPORTABLE": -1,
+      "WORKFLOW_OBSERVATION": 0,
+      "INVESTIGATION_HYPOTHESIS": 1,
+      "EVIDENCE_BACKED_RISK": 2,
+      "CONFIRMED_FLAW": 3
+    },
+    "category_descriptions": {
+      "NOT_REPORTABLE": "The trigger check did not establish a reportable material path.",
+      "WORKFLOW_OBSERVATION": "The code behaviour is observed, but no adverse mechanism is established.",
+      "INVESTIGATION_HYPOTHESIS": "A material detection exists, but one or more required links are inferred or incomplete.",
+      "EVIDENCE_BACKED_RISK": "The risk-shaped mechanism and material consequence are observed; a violated business policy is not proved.",
+      "CONFIRMED_FLAW": "An observed repository rule, requirement, or internal contract is explicitly contradicted by validated evidence."
+    },
+    "step4_may_downgrade": true,
+    "step4_may_upgrade": false,
+    "selected_means": "A prioritized detection, not a confirmed defect."
+  },
+  "selected_family_distribution": {
+    "DATA_CONTRACT_TRANSFORMATION": 1,
+    "BOUNDARY_DRIVEN_DECISION": 1
+  },
+  "paths_not_nominated_by_family": {
+    "BOUNDARY_DRIVEN_DECISION": 2,
+    "CROSS_BOUNDARY_TRUST_PATH": 2,
+    "EXTERNAL_DEPENDENCY_AND_RECOVERY": 2,
+    "FANOUT_OR_AMPLIFICATION": 2,
+    "MULTI_EFFECT_CONSISTENCY": 2,
+    "REPEATABLE_MATERIAL_EFFECT": 2,
+    "TIME_OR_ORDERING_DEPENDENCY": 3
+  },
+  "selected_component_ids": [
+    "component_4a9dc4f6a98dcea0"
+  ],
+  "selection_policy": {
+    "maximum_selected": 7,
+    "minimum_not_forced": true,
+    "minimum_score": 14,
+    "maximum_per_path": 2,
+    "maximum_per_family": 2,
+    "maximum_per_implementation_group": 1
+  },
+  "scan_qualification": {
+    "request_completeness": "COMPLETE",
+    "expected_request_ids": [
+      "semantic_pack_001_part_01",
+      "semantic_pack_001_part_02"
+    ],
+    "completed_request_ids": [
+      "semantic_pack_001_part_01",
+      "semantic_pack_001_part_02"
+    ],
+    "missing_request_ids": [],
+    "material_source_files_represented": 20,
+    "material_source_files_uncovered": [
+      "backend/controllers/userController.js",
+      "backend/javafx/WeatherDashboardJavaFX.java",
+      "backend/javafx/WeatherDesktopApp.java",
+      "backend/routes/userRoutes.js",
+      "frontend/index.html",
+      "frontend/src/App.css",
+      "frontend/src/App.jsx",
+      "frontend/src/components/3d/scenes/CloudScene.jsx",
+      "frontend/src/components/3d/scenes/ErrorScene.jsx",
+      "frontend/src/components/3d/scenes/FogScene.jsx",
+      "frontend/src/components/3d/scenes/SnowScene.jsx",
+      "frontend/src/components/ui/DailyForecast.jsx",
+      "frontend/src/components/ui/Header.jsx",
+      "frontend/src/components/ui/HeroWeather.jsx",
+      "frontend/src/components/ui/SavedLocationsDrawer.jsx",
+      "frontend/src/components/ui/ShareModal.jsx",
+      "frontend/src/components/ui/SmsToast.jsx",
+      "frontend/src/components/ui/WeatherAlerts.jsx",
+      "frontend/src/components/ui/WeatherMetrics.jsx",
+      "frontend/src/index.css",
+      "frontend/src/main.jsx",
+      "frontend/src/services/backendApi.js",
+      "frontend/src/services/firebaseConfig.js",
+      "frontend/src/services/wmoCodes.js",
+      "frontend/src/utils/feelsLikeLogic.js",
+      "frontend/vite.config.js",
+      "generate_pdf.py",
+      "services/firebaseService.js",
+      "services/otpService.js",
+      "services/smsService.js",
+      "services/weatherService.js"
+    ],
+    "repository_wide_conclusions_allowed": false,
+    "warnings": [
+      "Material source coverage gate: 19/45 significant source files represented (42.2%); repository-wide absence conclusions are prohibited."
+    ]
+  },
+  "interpretation_boundary": "Selected records are prioritized detections, not automatically confirmed defects. For each record, reporting_ceiling.maximum_allowed_claim is an absolute ceiling. Step 4 may retain or downgrade that category and must never upgrade it."
+}

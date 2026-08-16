@@ -1,0 +1,67 @@
+{
+  "status": "PASSED",
+  "warnings": [],
+  "deterministic_repair_count": 4,
+  "deterministic_repairs": [
+    {
+      "repair_type": "CLAMP_TO_NAMED_CHUNK",
+      "file_path": "frontend/src/components/ui/AuthModal.jsx",
+      "before": {
+        "chunk_id": "chunk_af1435d58fe39d0b",
+        "start_line": 343,
+        "end_line": 394
+      },
+      "after": {
+        "chunk_id": "chunk_af1435d58fe39d0b",
+        "start_line": 343,
+        "end_line": 370
+      }
+    },
+    {
+      "repair_type": "CLAMP_TO_NAMED_CHUNK",
+      "file_path": "frontend/src/components/ui/AuthModal.jsx",
+      "before": {
+        "chunk_id": "chunk_8137d37bcf6353ae",
+        "start_line": 499,
+        "end_line": 513
+      },
+      "after": {
+        "chunk_id": "chunk_8137d37bcf6353ae",
+        "start_line": 511,
+        "end_line": 513
+      }
+    },
+    {
+      "repair_type": "REASSIGN_TO_OVERLAPPING_CHUNK",
+      "file_path": "frontend/src/components/ui/AuthModal.jsx",
+      "before": {
+        "chunk_id": "chunk_af1435d58fe39d0b",
+        "start_line": 383,
+        "end_line": 394
+      },
+      "after": {
+        "chunk_id": "chunk_033a4e90d07accf0",
+        "start_line": 383,
+        "end_line": 394
+      }
+    },
+    {
+      "repair_type": "CLAMP_TO_NAMED_CHUNK",
+      "file_path": "frontend/src/components/ui/AuthModal.jsx",
+      "before": {
+        "chunk_id": "chunk_af1435d58fe39d0b",
+        "start_line": 237,
+        "end_line": 394
+      },
+      "after": {
+        "chunk_id": "chunk_af1435d58fe39d0b",
+        "start_line": 237,
+        "end_line": 370
+      }
+    }
+  ],
+  "evidence_reference_count": 68,
+  "path_count": 2,
+  "activation_fact_count": 11,
+  "risk_trigger_fields_present": false
+}

@@ -1,0 +1,728 @@
+{
+  "schema_version": "shipreadyv2.pass1_semantic_skim_result.v2",
+  "prompt_version": "shipreadyv2.pass1.semantic_skim_test.v3",
+  "request_id": "semantic_pack_001_part_01",
+  "semantic_pack_id": "semantic_pack_001",
+  "semantic_part": {
+    "sequence": 1,
+    "total": 2
+  },
+  "classification_status": "CLASSIFIED",
+  "repository_summary_fragment": {
+    "apparent_system_purpose": "A weather dashboard application with live forecast rendering, location search, user authentication, saved locations, and Firebase-backed login/history persistence.",
+    "primary_capabilities": [
+      "Display live weather, hourly forecast, daily forecast, AQI, and weather alerts",
+      "Search and select locations via geocoding and GPS reverse geocoding",
+      "Authenticate users by mobile OTP or Google sign-in",
+      "Persist user login counts and search history to Firebase/Express backend",
+      "Generate shareable weather summaries and SMS OTP toasts"
+    ],
+    "primary_repo_native_actors": [
+      "Unauthenticated guest visitor",
+      "Authenticated weather dashboard user",
+      "Express backend API",
+      "Firebase Realtime Database",
+      "Browser user interacting with the React UI"
+    ],
+    "important_business_objects": [
+      "active location",
+      "saved locations",
+      "weather data",
+      "OTP session",
+      "user profile",
+      "search history",
+      "authentication token"
+    ],
+    "material_effects": [
+      "Weather data fetched from Open-Meteo and rendered in the dashboard",
+      "OTP generated, dispatched, and verified for login",
+      "JWT issued after successful OTP verification",
+      "User login count and search history stored in Firebase/Express backend",
+      "Location selections update the active dashboard context and may be persisted"
+    ],
+    "explicit_requirements_found": [
+      "frontend/index.html loads /src/main.jsx into #root",
+      "backend/server.js exposes /api/health and mounts /api/auth and /api/user",
+      "authRoutes.js defines /send-otp, /verify-otp, and /google endpoints",
+      "WeatherContext persists active location and saved locations in localStorage",
+      "OTP validity is time-limited and verification clears the active session"
+    ],
+    "summary_evidence": [
+      {
+        "chunk_id": "chunk_62cf3d9f404a5d02",
+        "file_path": "backend/server.js",
+        "start_line": 20,
+        "end_line": 33,
+        "symbol_or_node_id": "backend/server.js",
+        "evidence_level": "E1_DIRECT_CODE",
+        "evidence_summary": "Express backend health endpoint and API route mounting for auth and user flows."
+      },
+      {
+        "chunk_id": "chunk_23e56d4ae6618b6b",
+        "file_path": "backend/controllers/authController.js",
+        "start_line": 10,
+        "end_line": 55,
+        "symbol_or_node_id": "sendOtp/verifyOtp",
+        "evidence_level": "E1_DIRECT_CODE",
+        "evidence_summary": "OTP send/verify handler generates OTP, validates it, records login, and issues JWT."
+      },
+      {
+        "chunk_id": "chunk_0a63a7353ed30f15",
+        "file_path": "frontend/src/context/AuthContext.jsx",
+        "start_line": 61,
+        "end_line": 185,
+        "symbol_or_node_id": "loginWithGoogle/requestMobileOTP/verifyMobileOTPAndLogin",
+        "evidence_level": "E1_DIRECT_CODE",
+        "evidence_summary": "Auth context orchestrates Google sign-in and mobile OTP verification through backend and fallback SMS providers."
+      },
+      {
+        "chunk_id": "chunk_e7ae8eb1344417dd",
+        "file_path": "frontend/src/context/WeatherContext.jsx",
+        "start_line": 69,
+        "end_line": 139,
+        "symbol_or_node_id": "loadWeather/addSavedLocation",
+        "evidence_level": "E1_DIRECT_CODE",
+        "evidence_summary": "Weather context loads forecast data for active location and syncs saved search history when a logged-in user pins a place."
+      },
+      {
+        "chunk_id": "chunk_35ff937689dcd644",
+        "file_path": "frontend/src/services/openMeteoApi.js",
+        "start_line": 13,
+        "end_line": 88,
+        "symbol_or_node_id": "searchLocations/reverseGeocode/fetchWeatherData",
+        "evidence_level": "E1_DIRECT_CODE",
+        "evidence_summary": "Client service performs geocoding, reverse geocoding, and parallel weather/AQI fetches from Open-Meteo and related APIs."
+      }
+    ],
+    "summary_confidence": "HIGH"
+  },
+  "business_path_fragments": [
+    {
+      "path_id": "path_auth_mobile_otp_login",
+      "path_summary": "Browser user requests an OTP, verifies it, receives a JWT-backed authenticated session, and the login is recorded in Firebase-backed user state.",
+      "entrypoints": [
+        "POST /api/auth/send-otp",
+        "POST /api/auth/verify-otp",
+        "POST /api/auth/google"
+      ],
+      "connected_node_ids": [
+        "chunk_0179c37bba243757",
+        "chunk_23e56d4ae6618b6b",
+        "chunk_0a63a7353ed30f15",
+        "chunk_145cf58000abc4b5",
+        "chunk_739cac2735031e6f",
+        "chunk_4327ecf70ef432e5"
+      ],
+      "business_context": {
+        "capability": "Mobile and Google authentication for the weather dashboard",
+        "actor_goal": "Sign in or register to access persistent dashboard features",
+        "business_object": "OTP session / user profile / authentication token",
+        "affected_actor_or_counterparty": "Browser user and Firebase-backed user record",
+        "business_value_or_consequence": [
+          "Allows authenticated access to account features",
+          "Creates a recorded login event and persistent user profile state",
+          "Enables later backend history sync and UI personalization"
+        ]
+      },
+      "runtime_shapes": [
+        "REST_API_ENDPOINT_HANDLER",
+        "COMMAND_LINE_INTERFACE_CLI_TOOL",
+        "SINGLE_PAGE_APPLICATION_SPA"
+      ],
+      "workload_shapes": [
+        "SESSION_STATE_DESERIALIZATION",
+        "TOKEN_REFRESH_ROTATION_VERIFICATION",
+        "DISTRIBUTED_CACHE_WARMUP"
+      ],
+      "repo_specific_intent": "send and verify mobile OTP or Google login for the dashboard",
+      "intent_family": "AUTHENTICATE_OR_ESTABLISH_IDENTITY",
+      "intent_object": "mobile OTP / Google profile",
+      "desired_outcome": "User is authenticated and receives a usable session token and profile",
+      "actors": [
+        {
+          "repo_native_actor": "Browser user",
+          "business_role": "Weather dashboard visitor",
+          "actor_archetype": "REGISTERED_FREE_USER",
+          "authentication_context": "Unauthenticated until OTP or Google flow completes",
+          "lifecycle_status_if_observed": "login/signup",
+          "evidence": [
+            {
+              "chunk_id": "chunk_0a63a7353ed30f15",
+              "file_path": "frontend/src/context/AuthContext.jsx",
+              "start_line": 52,
+              "end_line": 107,
+              "symbol_or_node_id": "loginWithGoogle",
+              "evidence_level": "E1_DIRECT_CODE",
+              "evidence_summary": "Google sign-in flow opens Firebase popup or falls back to a mock profile and posts it to the backend."
+            },
+            {
+              "chunk_id": "chunk_0a63a7353ed30f15",
+              "file_path": "frontend/src/context/AuthContext.jsx",
+              "start_line": 114,
+              "end_line": 185,
+              "symbol_or_node_id": "requestMobileOTP/verifyMobileOTPAndLogin",
+              "evidence_level": "E1_DIRECT_CODE",
+              "evidence_summary": "Mobile OTP request and verification call backend endpoints before local fallback handling."
+            }
+          ],
+          "confidence": "HIGH"
+        },
+        {
+          "repo_native_actor": "Express backend API",
+          "business_role": "Authentication service",
+          "actor_archetype": "THIRD_PARTY_INTEGRATION_BOT",
+          "authentication_context": "Server-side API handling unauthenticated requests",
+          "lifecycle_status_if_observed": "active",
+          "evidence": [
+            {
+              "chunk_id": "chunk_62cf3d9f404a5d02",
+              "file_path": "backend/server.js",
+              "start_line": 29,
+              "end_line": 33,
+              "symbol_or_node_id": "app.use routes",
+              "evidence_level": "E1_DIRECT_CODE",
+              "evidence_summary": "Backend mounts auth routes under /api/auth and user routes under /api/user."
+            },
+            {
+              "chunk_id": "chunk_23e56d4ae6618b6b",
+              "file_path": "backend/controllers/authController.js",
+              "start_line": 10,
+              "end_line": 55,
+              "symbol_or_node_id": "sendOtp/verifyOtp",
+              "evidence_level": "E1_DIRECT_CODE",
+              "evidence_summary": "Controller validates OTP request, verifies codes, records login, and returns token and user."
+            }
+          ],
+          "confidence": "HIGH"
+        }
+      ],
+      "resources_and_scopes": [
+        {
+          "repo_resource_type": "OTP session / user profile / JWT token",
+          "scope_type": "ACTOR_OWNED_RESOURCE",
+          "ownership_key_or_tenant_key": "phoneNumber or user.id / user.mobile / user.email",
+          "evidence": [
+            {
+              "chunk_id": "chunk_145cf58000abc4b5",
+              "file_path": "backend/services/otpService.js",
+              "start_line": 6,
+              "end_line": 113,
+              "symbol_or_node_id": "otpStore/createAndSendOtp/verifyOtpCode",
+              "evidence_level": "E1_DIRECT_CODE",
+              "evidence_summary": "OTP sessions are keyed by cleaned phone number and cleared after successful verification or expiry."
+            },
+            {
+              "chunk_id": "chunk_4327ecf70ef432e5",
+              "file_path": "backend/services/firebaseDbService.js",
+              "start_line": 17,
+              "end_line": 51,
+              "symbol_or_node_id": "recordUserLogin",
+              "evidence_level": "E1_DIRECT_CODE",
+              "evidence_summary": "User profile data is normalized by user id/mobile/email and stored in Firebase users path."
+            }
+          ],
+          "confidence": "HIGH"
+        }
+      ],
+      "states": [
+        {
+          "repo_native_state_name": "activeOtpSessions / otpStore",
+          "state_type": "SESSION_STATUS",
+          "observed_values": [
+            "expiresAt",
+            "code",
+            "createdTime"
+          ],
+          "starting_state": "no active session",
+          "resulting_state": "active OTP session or cleared session",
+          "source_symbol_or_field": "activeOtpSessions / otpStore",
+          "evidence": [
+            {
+              "chunk_id": "chunk_739cac2735031e6f",
+              "file_path": "frontend/src/utils/otpService.js",
+              "start_line": 6,
+              "end_line": 112,
+              "symbol_or_node_id": "activeOtpSessions",
+              "evidence_level": "E1_DIRECT_CODE",
+              "evidence_summary": "Frontend OTP session store creates, expires, validates, and deletes OTP sessions."
+            },
+            {
+              "chunk_id": "chunk_145cf58000abc4b5",
+              "file_path": "backend/services/otpService.js",
+              "start_line": 6,
+              "end_line": 112,
+              "symbol_or_node_id": "otpStore",
+              "evidence_level": "E1_DIRECT_CODE",
+              "evidence_summary": "Backend OTP store mirrors creation, expiry checks, and deletion on successful verification."
+            }
+          ],
+          "confidence": "HIGH"
+        },
+        {
+          "repo_native_state_name": "user loginCount",
+          "state_type": "VERSION_COUNTER",
+          "observed_values": [
+            "0",
+            "1",
+            "incremented"
+          ],
+          "starting_state": "existing profile or default object",
+          "resulting_state": "incremented login count and updated lastLogin",
+          "source_symbol_or_field": "existing.loginCount",
+          "evidence": [
+            {
+              "chunk_id": "chunk_4327ecf70ef432e5",
+              "file_path": "backend/services/firebaseDbService.js",
+              "start_line": 21,
+              "end_line": 35,
+              "symbol_or_node_id": "recordUserLogin",
+              "evidence_level": "E1_DIRECT_CODE",
+              "evidence_summary": "recordUserLogin creates or loads a cached profile, increments loginCount, and sets lastLogin."
+            },
+            {
+              "chunk_id": "chunk_23e56d4ae6618b6b",
+              "file_path": "backend/controllers/authController.js",
+              "start_line": 40,
+              "end_line": 48,
+              "symbol_or_node_id": "verifyOtp",
+              "evidence_level": "E1_DIRECT_CODE",
+              "evidence_summary": "Successful OTP verification records login before JWT issuance."
+            }
+          ],
+          "confidence": "HIGH"
+        }
+      ],
+      "path_types": [
+        "REQUEST_TO_RESPONSE_READ_ONLY",
+        "REQUEST_TO_TRANSACTION_COMMIT"
+      ],
+      "effect_types": [
+        "JSON_PAYLOAD_RETURNED",
+        "LEDGER_ENTRY_POSTED"
+      ],
+      "material_effects": [
+        "OTP generation and verification produces login responses and session cleanup",
+        "Successful verification creates a JWT and updates persistent login state in Firebase",
+        "Google login stores a normalized user profile and returns it to the client"
+      ],
+      "guards_observed": [
+        {
+          "guard_statement": "Phone number must be present and at least 6 characters for OTP send/verification entrypoints.",
+          "source_symbol_or_condition": "if (!phoneNumber || phoneNumber.trim().length < 6) / if (!phoneNumber || !code)",
+          "evidence": [
+            {
+              "chunk_id": "chunk_23e56d4ae6618b6b",
+              "file_path": "backend/controllers/authController.js",
+              "start_line": 12,
+              "end_line": 15,
+              "symbol_or_node_id": "sendOtp",
+              "evidence_level": "E1_DIRECT_CODE",
+              "evidence_summary": "Send OTP rejects short or missing phone numbers."
+            },
+            {
+              "chunk_id": "chunk_23e56d4ae6618b6b",
+              "file_path": "backend/controllers/authController.js",
+              "start_line": 30,
+              "end_line": 33,
+              "symbol_or_node_id": "verifyOtp",
+              "evidence_level": "E1_DIRECT_CODE",
+              "evidence_summary": "Verify OTP requires both phone number and code."
+            }
+          ],
+          "confidence": "HIGH"
+        },
+        {
+          "guard_statement": "OTP verification requires an active unexpired session and exact code match.",
+          "source_symbol_or_condition": "if (!session) / if (Date.now() > session.expiresAt) / if (session.code !== inputCode.trim())",
+          "evidence": [
+            {
+              "chunk_id": "chunk_739cac2735031e6f",
+              "file_path": "frontend/src/utils/otpService.js",
+              "start_line": 83,
+              "end_line": 101,
+              "symbol_or_node_id": "verifyMobileOTP",
+              "evidence_level": "E1_DIRECT_CODE",
+              "evidence_summary": "Frontend OTP verification checks session existence, expiry, and exact match before clearing the session."
+            },
+            {
+              "chunk_id": "chunk_145cf58000abc4b5",
+              "file_path": "backend/services/otpService.js",
+              "start_line": 83,
+              "end_line": 101,
+              "symbol_or_node_id": "verifyOtpCode",
+              "evidence_level": "E1_DIRECT_CODE",
+              "evidence_summary": "Backend OTP verification performs the same active-session, expiry, and code checks."
+            }
+          ],
+          "confidence": "HIGH"
+        },
+        {
+          "guard_statement": "Google sign-in may fall back to a mock profile if Firebase popup is unavailable or closed by the user.",
+          "source_symbol_or_condition": "if (popupErr.code === 'auth/popup-closed-by-user') return ...; if (!googleProfile) { ... }",
+          "evidence": [
+            {
+              "chunk_id": "chunk_0a63a7353ed30f15",
+              "file_path": "frontend/src/context/AuthContext.jsx",
+              "start_line": 69,
+              "end_line": 99,
+              "symbol_or_node_id": "loginWithGoogle",
+              "evidence_level": "E1_DIRECT_CODE",
+              "evidence_summary": "Firebase popup is attempted first; if it fails, a fallback Google profile is synthesized."
+            }
+          ],
+          "confidence": "HIGH"
+        }
+      ],
+      "observed_business_rules": [
+        {
+          "rule_statement": "OTP sessions expire after a short time window and are deleted after successful verification.",
+          "rule_type": "IDEMPOTENCY_OR_DEDUPLICATION_RULE",
+          "evidence_status": "OBSERVED",
+          "evidence": [
+            {
+              "chunk_id": "chunk_145cf58000abc4b5",
+              "file_path": "backend/services/otpService.js",
+              "start_line": 27,
+              "end_line": 33,
+              "symbol_or_node_id": "createAndSendOtp",
+              "evidence_level": "E1_DIRECT_CODE",
+              "evidence_summary": "Backend OTPs are given a 2 minute expiry and stored with createdTime."
+            },
+            {
+              "chunk_id": "chunk_145cf58000abc4b5",
+              "file_path": "backend/services/otpService.js",
+              "start_line": 91,
+              "end_line": 101,
+              "symbol_or_node_id": "verifyOtpCode",
+              "evidence_level": "E1_DIRECT_CODE",
+              "evidence_summary": "Expired OTPs are deleted and successful verification clears the session."
+            }
+          ],
+          "confidence": "HIGH"
+        },
+        {
+          "rule_statement": "Successful mobile OTP verification records login state before returning the JWT and user profile.",
+          "rule_type": "ORDERING_OR_SEQUENCE_RULE",
+          "evidence_status": "OBSERVED",
+          "evidence": [
+            {
+              "chunk_id": "chunk_23e56d4ae6618b6b",
+              "file_path": "backend/controllers/authController.js",
+              "start_line": 40,
+              "end_line": 55,
+              "symbol_or_node_id": "verifyOtp",
+              "evidence_level": "E1_DIRECT_CODE",
+              "evidence_summary": "recordUserLogin is called before jwt.sign and the JSON response is returned."
+            }
+          ],
+          "confidence": "HIGH"
+        },
+        {
+          "rule_statement": "User identity is normalized to a sanitized string key before writing to Firebase storage.",
+          "rule_type": "OTHER_REPO_SPECIFIC_RULE",
+          "evidence_status": "OBSERVED",
+          "evidence": [
+            {
+              "chunk_id": "chunk_4327ecf70ef432e5",
+              "file_path": "backend/services/firebaseDbService.js",
+              "start_line": 17,
+              "end_line": 20,
+              "symbol_or_node_id": "recordUserLogin",
+              "evidence_level": "E1_DIRECT_CODE",
+              "evidence_summary": "User IDs are sanitized with non-alphanumeric characters replaced by underscores before persistence."
+            },
+            {
+              "chunk_id": "chunk_460c1b6df57f6adf",
+              "file_path": "backend/javafx/FirebaseBackendController.java",
+              "start_line": 27,
+              "end_line": 40,
+              "symbol_or_node_id": "recordUserLogin",
+              "evidence_level": "E1_DIRECT_CODE",
+              "evidence_summary": "JavaFX backend controller applies the same sanitization before Firebase writes."
+            }
+          ],
+          "confidence": "HIGH"
+        }
+      ],
+      "business_invariants": [
+        "OTP verification consumes the active OTP session so the same code cannot be reused",
+        "Recorded user ids are sanitized before persistence",
+        "LoginCount is monotonically incremented on each successful login recording"
+      ],
+      "activation_facts": [
+        {
+          "fact_name": "external_input_present",
+          "value": "TRUE",
+          "evidence_status": "OBSERVED",
+          "reason": "Phone number, OTP code, and Google profile are supplied through HTTP body or UI interaction.",
+          "evidence": [
+            {
+              "chunk_id": "chunk_23e56d4ae6618b6b",
+              "file_path": "backend/controllers/authController.js",
+              "start_line": 12,
+              "end_line": 13,
+              "symbol_or_node_id": "sendOtp",
+              "evidence_level": "E1_DIRECT_CODE",
+              "evidence_summary": "sendOtp reads phoneNumber from req.body."
+            },
+            {
+              "chunk_id": "chunk_0a63a7353ed30f15",
+              "file_path": "frontend/src/context/AuthContext.jsx",
+              "start_line": 65,
+              "end_line": 102,
+              "symbol_or_node_id": "loginWithGoogle",
+              "evidence_level": "E1_DIRECT_CODE",
+              "evidence_summary": "Google login posts a profile object to the backend."
+            }
+          ]
+        },
+        {
+          "fact_name": "authenticated_actor_present",
+          "value": "TRUE",
+          "evidence_status": "OBSERVED",
+          "reason": "Successful OTP or Google login sets a user object and flags authenticated state in context.",
+          "evidence": [
+            {
+              "chunk_id": "chunk_0a63a7353ed30f15",
+              "file_path": "frontend/src/context/AuthContext.jsx",
+              "start_line": 151,
+              "end_line": 184,
+              "symbol_or_node_id": "verifyMobileOTPAndLogin",
+              "evidence_level": "E1_DIRECT_CODE",
+              "evidence_summary": "Successful verification stores user and closes auth modal."
+            },
+            {
+              "chunk_id": "chunk_0a63a7353ed30f15",
+              "file_path": "frontend/src/context/AuthContext.jsx",
+              "start_line": 105,
+              "end_line": 107,
+              "symbol_or_node_id": "loginWithGoogle",
+              "evidence_level": "E1_DIRECT_CODE",
+              "evidence_summary": "Successful Google login stores finalUser and closes auth modal."
+            }
+          ]
+        },
+        {
+          "fact_name": "resource_scope_present",
+          "value": "TRUE",
+          "evidence_status": "OBSERVED",
+          "reason": "User profiles and OTP sessions are keyed by phone number, user id, mobile, or email.",
+          "evidence": [
+            {
+              "chunk_id": "chunk_145cf58000abc4b5",
+              "file_path": "backend/services/otpService.js",
+              "start_line": 29,
+              "end_line": 33,
+              "symbol_or_node_id": "createAndSendOtp",
+              "evidence_level": "E1_DIRECT_CODE",
+              "evidence_summary": "OTP store is keyed by cleaned phone number."
+            },
+            {
+              "chunk_id": "chunk_4327ecf70ef432e5",
+              "file_path": "backend/services/firebaseDbService.js",
+              "start_line": 17,
+              "end_line": 20,
+              "symbol_or_node_id": "recordUserLogin",
+              "evidence_level": "E1_DIRECT_CODE",
+              "evidence_summary": "User profile key is derived from id/mobile/email and sanitized."
+            }
+          ]
+        },
+        {
+          "fact_name": "state_transition_present",
+          "value": "TRUE",
+          "evidence_status": "OBSERVED",
+          "reason": "OTP request transitions to active session, then to cleared session after verification; login recording increments count.",
+          "evidence": [
+            {
+              "chunk_id": "chunk_739cac2735031e6f",
+              "file_path": "frontend/src/utils/otpService.js",
+              "start_line": 37,
+              "end_line": 58,
+              "symbol_or_node_id": "sendMobileOTP",
+              "evidence_level": "E1_DIRECT_CODE",
+              "evidence_summary": "Sending OTP stores a new session and dispatches an SMS event."
+            },
+            {
+              "chunk_id": "chunk_739cac2735031e6f",
+              "file_path": "frontend/src/utils/otpService.js",
+              "start_line": 99,
+              "end_line": 111,
+              "symbol_or_node_id": "verifyMobileOTP",
+              "evidence_level": "E1_DIRECT_CODE",
+              "evidence_summary": "Successful verification clears session and returns a user."
+            }
+          ]
+        },
+        {
+          "fact_name": "external_dependency_present",
+          "value": "TRUE",
+          "evidence_status": "OBSERVED",
+          "reason": "The flow calls Firebase, Express backend, and Open-Meteo/BigDataCloud services.",
+          "evidence": [
+            {
+              "chunk_id": "chunk_0a63a7353ed30f15",
+              "file_path": "frontend/src/context/AuthContext.jsx",
+              "start_line": 69,
+              "end_line": 103,
+              "symbol_or_node_id": "loginWithGoogle",
+              "evidence_level": "E1_DIRECT_CODE",
+              "evidence_summary": "Firebase auth popup and backend sync are used for Google login."
+            },
+            {
+              "chunk_id": "chunk_35ff937689dcd644",
+              "file_path": "frontend/src/services/openMeteoApi.js",
+              "start_line": 16,
+              "end_line": 88,
+              "symbol_or_node_id": "fetchWeatherData/reverseGeocode",
+              "evidence_level": "E1_DIRECT_CODE",
+              "evidence_summary": "Weather and reverse geocoding depend on external HTTP APIs."
+            }
+          ]
+        }
+      ],
+      "requirement_alignment": {
+        "oracle_sources_found": [
+          "API_SCHEMA_OR_CONTRACT",
+          "OBSERVED_CONNECTED_CODE_RULE",
+          "USER_DOCUMENTATION_OR_README"
+        ],
+        "requirement_statements": [
+          "/api/auth/send-otp and /api/auth/verify-otp are the backend entrypoints for mobile login",
+          "OTP codes are short-lived and must match an active session",
+          "User login and search history are persisted in Firebase-backed storage",
+          "Weather dashboard UI loads live forecast data from Open-Meteo"
+        ],
+        "aligned_code_evidence": [
+          {
+            "chunk_id": "chunk_0179c37bba243757",
+            "file_path": "backend/routes/authRoutes.js",
+            "start_line": 6,
+            "end_line": 13,
+            "symbol_or_node_id": "router.post routes",
+            "evidence_level": "E1_DIRECT_CODE",
+            "evidence_summary": "Auth route declarations match the backend OTP and Google login contract."
+          },
+          {
+            "chunk_id": "chunk_145cf58000abc4b5",
+            "file_path": "backend/services/otpService.js",
+            "start_line": 24,
+            "end_line": 75,
+            "symbol_or_node_id": "createAndSendOtp",
+            "evidence_level": "E1_DIRECT_CODE",
+            "evidence_summary": "OTP creation and SMS dispatch behavior is implemented in the backend service."
+          },
+          {
+            "chunk_id": "chunk_e7ae8eb1344417dd",
+            "file_path": "frontend/src/context/WeatherContext.jsx",
+            "start_line": 69,
+            "end_line": 139,
+            "symbol_or_node_id": "loadWeather/addSavedLocation",
+            "evidence_level": "E1_DIRECT_CODE",
+            "evidence_summary": "Weather load and history sync behavior in the UI context matches the repository's documented dashboard flow."
+          }
+        ],
+        "conflicts_or_gaps": [],
+        "confidence": "HIGH"
+      },
+      "evidence": [
+        {
+          "chunk_id": "chunk_0179c37bba243757",
+          "file_path": "backend/routes/authRoutes.js",
+          "start_line": 6,
+          "end_line": 13,
+          "symbol_or_node_id": "router.post routes",
+          "evidence_level": "E1_DIRECT_CODE",
+          "evidence_summary": "Defines POST routes for send-otp, verify-otp, and google auth."
+        },
+        {
+          "chunk_id": "chunk_23e56d4ae6618b6b",
+          "file_path": "backend/controllers/authController.js",
+          "start_line": 10,
+          "end_line": 97,
+          "symbol_or_node_id": "sendOtp/verifyOtp/googleAuth",
+          "evidence_level": "E1_DIRECT_CODE",
+          "evidence_summary": "Controller handles OTP issuance, verification, login recording, JWT generation, and Google auth persistence."
+        },
+        {
+          "chunk_id": "chunk_145cf58000abc4b5",
+          "file_path": "backend/services/otpService.js",
+          "start_line": 24,
+          "end_line": 112,
+          "symbol_or_node_id": "createAndSendOtp/verifyOtpCode",
+          "evidence_level": "E1_DIRECT_CODE",
+          "evidence_summary": "Backend OTP service creates, stores, expires, verifies, and clears OTP sessions."
+        },
+        {
+          "chunk_id": "chunk_4327ecf70ef432e5",
+          "file_path": "backend/services/firebaseDbService.js",
+          "start_line": 17,
+          "end_line": 83,
+          "symbol_or_node_id": "recordUserLogin/saveSearchHistory",
+          "evidence_level": "E1_DIRECT_CODE",
+          "evidence_summary": "Firebase persistence layer stores login counts and search history using sanitized user keys."
+        },
+        {
+          "chunk_id": "chunk_0a63a7353ed30f15",
+          "file_path": "frontend/src/context/AuthContext.jsx",
+          "start_line": 52,
+          "end_line": 185,
+          "symbol_or_node_id": "AuthProvider",
+          "evidence_level": "E1_DIRECT_CODE",
+          "evidence_summary": "Frontend auth context orchestrates Google login, OTP request/verification, and local auth state."
+        }
+      ],
+      "evidence_gaps": [
+        "The full backend user profile retrieval controller is referenced by routes but not present in the supplied chunks.",
+        "Firebase configuration details are present, but the backend authorization rules for persistence are not shown in this fragment."
+      ],
+      "confidence": "HIGH"
+    }
+  ],
+  "cross_pack_followups": [
+    {
+      "reason": "Need the user controller and any profile/history retrieval implementation to complete the read path for /api/user/:userId and /api/user/:userId/history.",
+      "related_semantic_pack_id": "semantic_pack_001",
+      "related_source_batch_id": "batch_014",
+      "related_chunk_id": "chunk_65d2b8c1ac2ea1c9"
+    },
+    {
+      "reason": "Need the remaining frontend weather UI chunks such as HourlyStrip, SavedLocationsDrawer, AuthModal, and WeatherCanvas to expand weather display and saved-location behavior into additional path fragments.",
+      "related_semantic_pack_id": "semantic_pack_001",
+      "related_source_batch_id": "batch_014",
+      "related_chunk_id": "chunk_6d59cc5c6f57564a"
+    }
+  ],
+  "unsupported_or_nonmaterial_signals": [
+    {
+      "signal": "generate_pdf.py documentation generator",
+      "reason": "This appears to be a documentation/export utility rather than a production business path in the weather dashboard runtime.",
+      "evidence": [
+        {
+          "chunk_id": "chunk_7dafd0491e8ca5d1",
+          "file_path": "generate_pdf.py",
+          "start_line": 7,
+          "end_line": 206,
+          "symbol_or_node_id": "create_pdf",
+          "evidence_level": "E4_NAME_OR_DEPENDENCY_ONLY",
+          "evidence_summary": "Generates a PDF architecture document describing the app; not part of the dashboard runtime flow."
+        }
+      ]
+    },
+    {
+      "signal": "frontend/vite.config.js build configuration",
+      "reason": "Build-time tooling configuration does not establish a material business path.",
+      "evidence": [
+        {
+          "chunk_id": "chunk_6abd0808eeb26110",
+          "file_path": "frontend/vite.config.js",
+          "start_line": 1,
+          "end_line": 8,
+          "symbol_or_node_id": "defineConfig",
+          "evidence_level": "E4_NAME_OR_DEPENDENCY_ONLY",
+          "evidence_summary": "Vite and Tailwind plugin wiring is build configuration only."
+        }
+      ]
+    }
+  ]
+}

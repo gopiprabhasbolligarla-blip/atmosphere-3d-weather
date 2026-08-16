@@ -9,6 +9,7 @@ lerna-debug.log*
 
 # Diagnostic data
 .gemini/
+shipready_results/
 
 # Dependency directories
 node_modules/

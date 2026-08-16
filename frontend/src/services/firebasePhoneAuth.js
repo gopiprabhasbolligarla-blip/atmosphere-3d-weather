@@ -1,10 +1,9 @@
 import { RecaptchaVerifier, signInWithPhoneNumber } from 'firebase/auth';
 import { auth, isFirebaseConfigured } from './firebaseConfig';
 
-// Set Firebase Phone Auth 7-Day Test Token provided from Firebase Console
-if (typeof window !== 'undefined') {
-  window.FIREBASE_APPCHECK_DEBUG_TOKEN =
-    'AVweKojskY5duqBYtRZ8yURaOJcQ5eY7tklV9LyhAlLFWM3tLFUDRgQ02g7wX-zgXrTGs4Bi4stGLIJVp29FoyiBtV643LFL-Tw8KwKH5m-4VBDpYy0Ri-lPyr91fhwB5gXlfBWudnGzciK5-lKsViu-TQ';
+// Set App Check Debug token only if configured in environment variables for local testing
+if (typeof window !== 'undefined' && import.meta.env.VITE_FIREBASE_APPCHECK_DEBUG_TOKEN) {
+  window.FIREBASE_APPCHECK_DEBUG_TOKEN = import.meta.env.VITE_FIREBASE_APPCHECK_DEBUG_TOKEN;
 }
 
 /**
@@ -25,7 +24,7 @@ export function initPhoneRecaptcha(buttonOrContainerId = 'recaptcha-container') 
   window.recaptchaVerifier = new RecaptchaVerifier(auth, buttonOrContainerId, {
     size: 'invisible',
     callback: () => {
-      console.log('[Firebase Auth] reCAPTCHA verified via Test Token');
+      console.log('[Firebase Auth] reCAPTCHA verified');
     },
     'expired-callback': () => {
       console.warn('[Firebase Auth] reCAPTCHA expired');

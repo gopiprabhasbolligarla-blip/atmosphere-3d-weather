@@ -1,0 +1,24 @@
+{
+  "repository_id": "repository_ae6e29beaaedcf4f",
+  "candidate_dispositions": [
+    {
+      "source_insight_id": "insight_02b58588c6045a95",
+      "decision": "PUBLISHED",
+      "published_flaw_id": "flaw_01",
+      "reason": "The candidate contributes to an evidence-backed published business flaw."
+    },
+    {
+      "source_insight_id": "insight_e693e0a9e7663821",
+      "decision": "PUBLISHED",
+      "published_flaw_id": "flaw_01",
+      "reason": "The candidate contributes to an evidence-backed published business flaw."
+    }
+  ],
+  "governance_repairs": [
+    {
+      "type": "CUSTOMER_LANGUAGE_MADE_DECISIVE",
+      "flaw_id": "flaw_01",
+      "field": "business_impact.business_downside"
+    }
+  ]
+}

@@ -1,0 +1,33 @@
+{
+  "status": "SUCCESS",
+  "generated_at": "2026-08-16T03:29:09.098092+00:00",
+  "repository_id": "repository_ae6e29beaaedcf4f",
+  "repository_name": "weather-dashboard",
+  "model": "gpt-5.4",
+  "llm_requests": 1,
+  "input_candidates": 2,
+  "published_flaws": 1,
+  "strong_evidence": 1,
+  "supported_evidence": 0,
+  "structural_hotspots": 0,
+  "governance_repairs": 1,
+  "usage": {
+    "input_tokens": 53634,
+    "input_tokens_details": {
+      "cache_write_tokens": 0,
+      "cached_tokens": 0
+    },
+    "output_tokens": 5796,
+    "output_tokens_details": {
+      "reasoning_tokens": 3157
+    },
+    "total_tokens": 59430
+  },
+  "elapsed_seconds": 46.12,
+  "outputs": {
+    "customer_html": "C:\\Users\\hp\\Downloads\\weather-dashboard\\shipready_results\\analysis_20260816_085722_7e5f72\\lanes\\full_analysis\\weather-dashboard_shipreadyv2_20260816_085723\\shipreadyv2_customer_business_flaw_report_v2_run_001.html",
+    "business_graph_svg": "C:\\Users\\hp\\Downloads\\weather-dashboard\\shipready_results\\analysis_20260816_085722_7e5f72\\lanes\\full_analysis\\weather-dashboard_shipreadyv2_20260816_085723\\shipreadyv2_customer_business_flaw_graph_v2_run_001.svg",
+    "evidence_json": "C:\\Users\\hp\\Downloads\\weather-dashboard\\shipready_results\\analysis_20260816_085722_7e5f72\\lanes\\full_analysis\\weather-dashboard_shipreadyv2_20260816_085723\\shipreadyv2_customer_business_flaw_report_v2_run_001.json",
+    "candidate_dispositions": "C:\\Users\\hp\\Downloads\\weather-dashboard\\shipready_results\\analysis_20260816_085722_7e5f72\\lanes\\full_analysis\\weather-dashboard_shipreadyv2_20260816_085723\\business_flaw_dispositions_v2_run_001.json"
+  }
+}

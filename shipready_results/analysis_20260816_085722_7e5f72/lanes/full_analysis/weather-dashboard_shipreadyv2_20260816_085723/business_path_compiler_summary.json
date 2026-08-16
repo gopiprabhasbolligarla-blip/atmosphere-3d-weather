@@ -1,0 +1,16 @@
+{
+  "status": "SUCCESS",
+  "generated_at": "2026-08-16T03:28:22.641395+00:00",
+  "scan_completeness": "COMPLETE",
+  "expected_requests": 2,
+  "completed_requests": 2,
+  "normalized_paths": 3,
+  "components": 3,
+  "repository_wide_conclusions_allowed": false,
+  "outputs": {
+    "normalized_business_paths": "C:\\Users\\hp\\Downloads\\weather-dashboard\\shipready_results\\analysis_20260816_085722_7e5f72\\lanes\\full_analysis\\weather-dashboard_shipreadyv2_20260816_085723\\normalized_business_paths.json",
+    "business_workflow_context_html": "C:\\Users\\hp\\Downloads\\weather-dashboard\\shipready_results\\analysis_20260816_085722_7e5f72\\lanes\\full_analysis\\weather-dashboard_shipreadyv2_20260816_085723\\business_workflow_context.html",
+    "business_path_coverage": "C:\\Users\\hp\\Downloads\\weather-dashboard\\shipready_results\\analysis_20260816_085722_7e5f72\\lanes\\full_analysis\\weather-dashboard_shipreadyv2_20260816_085723\\business_path_coverage.json",
+    "audit_log": "C:\\Users\\hp\\Downloads\\weather-dashboard\\shipready_results\\analysis_20260816_085722_7e5f72\\lanes\\full_analysis\\weather-dashboard_shipreadyv2_20260816_085723\\business_path_compiler_audit.jsonl"
+  }
+}

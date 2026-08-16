@@ -1,0 +1,117 @@
+{
+  "schema_version": "shipready.business_path_coverage.v1",
+  "generated_at": "2026-08-16T03:28:22.627564+00:00",
+  "repository_id": "repository_ae6e29beaaedcf4f",
+  "scan": {
+    "completeness": "COMPLETE",
+    "expected_request_ids": [
+      "semantic_pack_001_part_01",
+      "semantic_pack_001_part_02"
+    ],
+    "completed_request_ids": [
+      "semantic_pack_001_part_01",
+      "semantic_pack_001_part_02"
+    ],
+    "missing_requests": [],
+    "semantic_pack_ids": [
+      "semantic_pack_001"
+    ],
+    "repository_wide_conclusions_allowed": false,
+    "qualification_message": "Repository-wide absence conclusions are prohibited: 26 significant production source files are not represented by normalized paths."
+  },
+  "coverage": {
+    "source_fragment_count": 3,
+    "normalized_path_count": 3,
+    "component_count": 3,
+    "reachable_path_count": 3,
+    "internal_only_path_count": 0,
+    "test_demo_path_count": 0,
+    "unknown_reachability_path_count": 0,
+    "valid_evidence_count": 98,
+    "repaired_evidence_count": 0,
+    "invalid_evidence_count": 0,
+    "files_represented": [
+      "backend/controllers/authController.js",
+      "backend/javafx/FirebaseBackendController.java",
+      "backend/routes/authRoutes.js",
+      "backend/server.js",
+      "backend/services/firebaseDbService.js",
+      "backend/services/otpService.js",
+      "frontend/src/components/3d/CameraParallax.jsx",
+      "frontend/src/components/3d/WeatherCanvas.jsx",
+      "frontend/src/components/3d/WeatherLighting.jsx",
+      "frontend/src/components/3d/scenes/ClearScene.jsx",
+      "frontend/src/components/3d/scenes/NightScene.jsx",
+      "frontend/src/components/3d/scenes/RainScene.jsx",
+      "frontend/src/components/ui/AuthModal.jsx",
+      "frontend/src/components/ui/HourlyStrip.jsx",
+      "frontend/src/context/AuthContext.jsx",
+      "frontend/src/context/WeatherContext.jsx",
+      "frontend/src/services/firebasePhoneAuth.js",
+      "frontend/src/services/freeSmsService.js",
+      "frontend/src/services/openMeteoApi.js",
+      "frontend/src/utils/otpService.js"
+    ],
+    "uncovered_files": [
+      "backend/controllers/userController.js",
+      "backend/javafx/WeatherDashboardJavaFX.java",
+      "backend/javafx/WeatherDesktopApp.java",
+      "backend/routes/userRoutes.js",
+      "frontend/index.html",
+      "frontend/src/App.css",
+      "frontend/src/App.jsx",
+      "frontend/src/components/3d/scenes/CloudScene.jsx",
+      "frontend/src/components/3d/scenes/ErrorScene.jsx",
+      "frontend/src/components/3d/scenes/FogScene.jsx",
+      "frontend/src/components/3d/scenes/SnowScene.jsx",
+      "frontend/src/components/ui/DailyForecast.jsx",
+      "frontend/src/components/ui/Header.jsx",
+      "frontend/src/components/ui/HeroWeather.jsx",
+      "frontend/src/components/ui/SavedLocationsDrawer.jsx",
+      "frontend/src/components/ui/ShareModal.jsx",
+      "frontend/src/components/ui/SmsToast.jsx",
+      "frontend/src/components/ui/WeatherAlerts.jsx",
+      "frontend/src/components/ui/WeatherMetrics.jsx",
+      "frontend/src/index.css",
+      "frontend/src/main.jsx",
+      "frontend/src/services/backendApi.js",
+      "frontend/src/services/firebaseConfig.js",
+      "frontend/src/services/wmoCodes.js",
+      "frontend/src/utils/feelsLikeLogic.js",
+      "frontend/vite.config.js",
+      "generate_pdf.py",
+      "services/firebaseService.js",
+      "services/otpService.js",
+      "services/smsService.js",
+      "services/weatherService.js"
+    ],
+    "coverage_warnings": [
+      "Material source coverage gate: 19/45 significant source files represented (42.2%); repository-wide absence conclusions are prohibited."
+    ]
+  },
+  "component_coverage": [
+    {
+      "component_id": "component_ec945e43b03cf99b",
+      "component_type": "INTERACTIVE_APPLICATION",
+      "reachability": "PRODUCTION_ENTRYPOINT",
+      "path_count": 1,
+      "file_count": 7
+    },
+    {
+      "component_id": "component_4a9dc4f6a98dcea0",
+      "component_type": "FULL_STACK_APPLICATION",
+      "reachability": "PRODUCTION_ENTRYPOINT",
+      "path_count": 1,
+      "file_count": 10
+    },
+    {
+      "component_id": "component_70d0234ffa76f607",
+      "component_type": "INTERACTIVE_APPLICATION",
+      "reachability": "PRODUCTION_ENTRYPOINT",
+      "path_count": 1,
+      "file_count": 3
+    }
+  ],
+  "missing_request_ids": [],
+  "repository_wide_conclusions_allowed": false
+}

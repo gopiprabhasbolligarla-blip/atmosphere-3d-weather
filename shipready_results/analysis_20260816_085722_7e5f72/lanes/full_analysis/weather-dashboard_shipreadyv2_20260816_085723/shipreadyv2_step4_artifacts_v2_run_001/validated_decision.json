@@ -1,0 +1,308 @@
+{
+  "runner_version": "shipready-step4-business-flaw-v3.0-structural-hotspots",
+  "model": "gpt-5.4",
+  "input_sha256": "4b41b32b8f7452c38c45057044275a3fd5399fe8b0733f2c6fcf6b5745ab3e23",
+  "usage": {
+    "input_tokens": 53634,
+    "input_tokens_details": {
+      "cache_write_tokens": 0,
+      "cached_tokens": 0
+    },
+    "output_tokens": 5796,
+    "output_tokens_details": {
+      "reasoning_tokens": 3157
+    },
+    "total_tokens": 59430
+  },
+  "result": {
+    "schema_version": "shipready.customer_business_flaw_report.v2",
+    "repository_name": "weather-dashboard",
+    "executive_bottom_line": "The authentication flow creates real signed-in sessions from identity material that the requester can supply or read back, so public callers complete login without proving phone or Google account ownership.",
+    "published_flaws": [
+      {
+        "flaw_id": "flaw_01",
+        "title": "Authentication endpoints issue sessions without verified identity proof",
+        "bottom_line": "OTP requests return the verification code to the requester, and Google sign-in accepts caller-supplied or fabricated profiles, so an unauthenticated visitor completes login and receives a persisted authenticated session.",
+        "verdict": "CONFIRMED_BUSINESS_FLAW",
+        "evidence_strength": "STRONG",
+        "severity": "HIGH",
+        "business_capability": "Mobile and Google authentication for the weather dashboard",
+        "trigger": {
+          "statement": "A visitor uses the public OTP or Google sign-in endpoints and supplies the identity material that the same flow exposes or accepts.",
+          "evidence_refs": [
+            "evidence_b1e7991fff1d9499",
+            "evidence_89117420a1c8279d",
+            "evidence_355797964daba6df",
+            "evidence_dd2605b3bc15f918",
+            "evidence_c5c358fac6853579",
+            "evidence_7262050ebf3599e2",
+            "evidence_8be7fdb9c06c7b86"
+          ]
+        },
+        "observed_behavior": {
+          "statement": "The OTP path returns the generated code in the request flow and the Google path accepts a posted or synthesized profile, then the backend records login state and returns a JWT-backed success response.",
+          "evidence_refs": [
+            "evidence_dd2605b3bc15f918",
+            "evidence_355797964daba6df",
+            "evidence_84edae2785b06db8",
+            "evidence_c5c358fac6853579",
+            "evidence_9ab737dbb14ea2f7",
+            "evidence_7262050ebf3599e2",
+            "evidence_8be7fdb9c06c7b86",
+            "evidence_922998d7d7a1bcdd",
+            "evidence_fe35ad94d379746b",
+            "evidence_068b77f66e5e1233"
+          ]
+        },
+        "business_rule": {
+          "statement": "Sign-in must require proof of control of the phone number or a verified Google identity before a session token and user record are created.",
+          "basis": "UNIVERSAL_INTEGRITY",
+          "evidence_refs": [
+            "evidence_89117420a1c8279d",
+            "evidence_355797964daba6df",
+            "evidence_8be7fdb9c06c7b86",
+            "evidence_84edae2785b06db8",
+            "evidence_c5c358fac6853579"
+          ]
+        },
+        "business_impact": {
+          "immediate_outcome": "The service returns successful login responses, issues JWT-backed sessions, and writes login state for identities that were not verified by an external proof step.",
+          "affected_party_or_asset": "Authenticated dashboard access, persisted user profiles, login counters, and user-linked history state.",
+          "business_downside": "Unauthenticated visitors obtain signed-in access and creates or update persisted account state under chosen phone or Google identities.",
+          "scale_mechanism": "The behavior is reachable through public authentication endpoints and completes in the normal sign-in workflow.",
+          "detection_difficulty": "Successful responses and normal login records look the same as legitimate sign-ins.",
+          "reversibility": "Issued sessions expire later, but created profiles, login counters, and stored history require explicit cleanup.",
+          "impact_basis": "DIRECT_CODE_CONSEQUENCE",
+          "evidence_refs": [
+            "evidence_b1e7991fff1d9499",
+            "evidence_89117420a1c8279d",
+            "evidence_922998d7d7a1bcdd",
+            "evidence_8be7fdb9c06c7b86",
+            "evidence_fe35ad94d379746b",
+            "evidence_068b77f66e5e1233",
+            "evidence_8cbfce77cd39a120",
+            "evidence_f3eed009db6cc8a1"
+          ]
+        },
+        "applicable_lens_ids": [
+          "G1-05",
+          "G1-13",
+          "G1-15"
+        ],
+        "business_path_nodes": [
+          {
+            "node_id": "node_1",
+            "node_type": "ACTOR",
+            "business_label": "Visitor",
+            "business_component": "Authentication",
+            "evidence_refs": [
+              "evidence_b1e7991fff1d9499",
+              "evidence_89117420a1c8279d"
+            ]
+          },
+          {
+            "node_id": "node_2",
+            "node_type": "ACTION",
+            "business_label": "Submit sign-in request",
+            "business_component": "Authentication",
+            "evidence_refs": [
+              "evidence_355797964daba6df",
+              "evidence_8be7fdb9c06c7b86",
+              "evidence_7262050ebf3599e2"
+            ]
+          },
+          {
+            "node_id": "node_3",
+            "node_type": "CONDITION",
+            "business_label": "Identity proof is caller-supplied or returned to the same requester",
+            "business_component": "Authentication",
+            "evidence_refs": [
+              "evidence_dd2605b3bc15f918",
+              "evidence_84edae2785b06db8",
+              "evidence_c5c358fac6853579",
+              "evidence_9ab737dbb14ea2f7",
+              "evidence_7262050ebf3599e2"
+            ]
+          },
+          {
+            "node_id": "node_4",
+            "node_type": "CODE_OUTCOME",
+            "business_label": "Backend accepts sign-in and records login",
+            "business_component": "Authentication",
+            "evidence_refs": [
+              "evidence_355797964daba6df",
+              "evidence_8be7fdb9c06c7b86",
+              "evidence_922998d7d7a1bcdd",
+              "evidence_fe35ad94d379746b",
+              "evidence_068b77f66e5e1233"
+            ]
+          },
+          {
+            "node_id": "node_5",
+            "node_type": "BUSINESS_RESOURCE",
+            "business_label": "Session token and persisted user profile",
+            "business_component": "Session and user state",
+            "evidence_refs": [
+              "evidence_922998d7d7a1bcdd",
+              "evidence_fe35ad94d379746b",
+              "evidence_8cbfce77cd39a120"
+            ]
+          },
+          {
+            "node_id": "node_6",
+            "node_type": "BUSINESS_DOWNSIDE",
+            "business_label": "Unverified user gains authenticated access and alters account state",
+            "business_component": "Protected dashboard features",
+            "evidence_refs": [
+              "evidence_2a29179b2866bb65",
+              "evidence_f3eed009db6cc8a1",
+              "evidence_8cbfce77cd39a120"
+            ]
+          }
+        ],
+        "business_path_edges": [
+          {
+            "source_node_id": "node_1",
+            "target_node_id": "node_2",
+            "relationship": "initiates",
+            "edge_basis": "CODE_ESTABLISHED",
+            "evidence_refs": [
+              "evidence_b1e7991fff1d9499",
+              "evidence_89117420a1c8279d"
+            ]
+          },
+          {
+            "source_node_id": "node_2",
+            "target_node_id": "node_3",
+            "relationship": "provides",
+            "edge_basis": "CODE_ESTABLISHED",
+            "evidence_refs": [
+              "evidence_dd2605b3bc15f918",
+              "evidence_c5c358fac6853579",
+              "evidence_7262050ebf3599e2"
+            ]
+          },
+          {
+            "source_node_id": "node_3",
+            "target_node_id": "node_4",
+            "relationship": "is trusted by",
+            "edge_basis": "CODE_ESTABLISHED",
+            "evidence_refs": [
+              "evidence_355797964daba6df",
+              "evidence_8be7fdb9c06c7b86",
+              "evidence_922998d7d7a1bcdd"
+            ]
+          },
+          {
+            "source_node_id": "node_4",
+            "target_node_id": "node_5",
+            "relationship": "creates",
+            "edge_basis": "CODE_ESTABLISHED",
+            "evidence_refs": [
+              "evidence_922998d7d7a1bcdd",
+              "evidence_fe35ad94d379746b",
+              "evidence_068b77f66e5e1233"
+            ]
+          },
+          {
+            "source_node_id": "node_5",
+            "target_node_id": "node_6",
+            "relationship": "grants",
+            "edge_basis": "BUSINESS_CONSEQUENCE",
+            "evidence_refs": [
+              "evidence_2a29179b2866bb65",
+              "evidence_f3eed009db6cc8a1",
+              "evidence_8cbfce77cd39a120"
+            ]
+          }
+        ],
+        "code_path_explanation": [
+          "The backend exposes public POST routes for /api/auth/send-otp, /api/auth/verify-otp, and /api/auth/google.",
+          "The OTP send handler returns the service result from createAndSendOtp, and that service includes the generated code in its returned object; the frontend also reads backendRes.code and surfaces it in the request flow.",
+          "The OTP verify handler only checks that the submitted code matches the stored session, then records login state and returns a JWT and user object.",
+          "The Google login flow posts either the Firebase popup result or a synthesized fallback profile to the backend, and the backend accepts req.body.profile or creates its own default profile, records login, signs a JWT, and returns success."
+        ],
+        "counterevidence_checked": [
+          {
+            "item_checked": "OTP verification requires an active session, an unexpired code, and an exact code match.",
+            "result": "Those checks validate the same code that the request flow returns to the requester.",
+            "conclusion": "DOES_NOT_PREVENT",
+            "evidence_refs": [
+              "evidence_46d300b94957d697",
+              "evidence_62624b1973f1277b",
+              "evidence_dd2605b3bc15f918",
+              "evidence_355797964daba6df"
+            ]
+          },
+          {
+            "item_checked": "Google popup close handling returns a failed client response.",
+            "result": "Only the user-closed popup branch returns failure; other popup failures fall back to a synthesized profile, and the backend also defaults a profile when none is supplied.",
+            "conclusion": "DOES_NOT_PREVENT",
+            "evidence_refs": [
+              "evidence_9ab737dbb14ea2f7",
+              "evidence_c5c358fac6853579",
+              "evidence_8be7fdb9c06c7b86"
+            ]
+          }
+        ],
+        "control_objective": "Require independently verified identity evidence before issuing an authenticated session or persisting login state.",
+        "acceptance_check": {
+          "given": "an unauthenticated caller who can reach the public authentication endpoints",
+          "when": "the caller reads the OTP from the request flow or submits a fabricated Google profile and completes the corresponding sign-in request, the application returns a successful authenticated response and records the login as that identity.",
+          "then": "the sign-in is rejected unless the caller presents externally verified proof for the claimed phone number or Google account"
+        },
+        "source_insight_ids": [
+          "insight_02b58588c6045a95",
+          "insight_e693e0a9e7663821"
+        ],
+        "source_path_ids": [
+          "business_path_0c6021d560d72aa8"
+        ],
+        "evidence_refs": [
+          "evidence_b1e7991fff1d9499",
+          "evidence_89117420a1c8279d",
+          "evidence_355797964daba6df",
+          "evidence_dd2605b3bc15f918",
+          "evidence_84edae2785b06db8",
+          "evidence_46d300b94957d697",
+          "evidence_62624b1973f1277b",
+          "evidence_c5c358fac6853579",
+          "evidence_9ab737dbb14ea2f7",
+          "evidence_7262050ebf3599e2",
+          "evidence_8be7fdb9c06c7b86",
+          "evidence_922998d7d7a1bcdd",
+          "evidence_fe35ad94d379746b",
+          "evidence_068b77f66e5e1233",
+          "evidence_8cbfce77cd39a120",
+          "evidence_2a29179b2866bb65",
+          "evidence_f3eed009db6cc8a1"
+        ]
+      }
+    ],
+    "fix_first_flaw_ids": [
+      "flaw_01"
+    ],
+    "candidate_dispositions": [
+      {
+        "source_insight_id": "insight_02b58588c6045a95",
+        "decision": "PUBLISHED",
+        "published_flaw_id": "flaw_01",
+        "reason": "The candidate contributes to an evidence-backed published business flaw."
+      },
+      {
+        "source_insight_id": "insight_e693e0a9e7663821",
+        "decision": "PUBLISHED",
+        "published_flaw_id": "flaw_01",
+        "reason": "The candidate contributes to an evidence-backed published business flaw."
+      }
+    ],
+    "decision_summary": "Published one high-severity authentication flaw. Both supplied candidates converge on the same reachable business failure: public auth endpoints trust identity material that is exposed to or chosen by the requester, and then issue authenticated sessions and persisted login state."
+  },
+  "repairs": [
+    {
+      "type": "CUSTOMER_LANGUAGE_MADE_DECISIVE",
+      "flaw_id": "flaw_01",
+      "field": "business_impact.business_downside"
+    }
+  ]
+}

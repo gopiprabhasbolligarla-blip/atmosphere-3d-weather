@@ -2,7 +2,10 @@ import jwt from 'jsonwebtoken';
 import { createAndSendOtp, verifyOtpCode } from '../services/otpService.js';
 import { recordUserLogin } from '../services/firebaseDbService.js';
 
-const JWT_SECRET = process.env.JWT_SECRET || 'atmosphere_default_secret_key';
+const JWT_SECRET = process.env.JWT_SECRET || 'atmosphere_production_secure_jwt_secret_2026';
+if (!JWT_SECRET) {
+  console.warn('[Security Warning] JWT_SECRET is using default fallback. Set JWT_SECRET in .env for production.');
+}
 
 /**
  * Send OTP Handler

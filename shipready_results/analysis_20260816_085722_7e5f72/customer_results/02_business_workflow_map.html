@@ -1,0 +1,459 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>weather-dashboard · Business Workflow Context</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#f7f9fc;color:#0f172a;font-family:Segoe UI,Arial,sans-serif}
+.hero{padding:28px max(20px,6vw) 24px;background:linear-gradient(125deg,#111827,#312e81);color:#fff}
+.eyebrow{font-size:11px;letter-spacing:.08em;text-transform:uppercase;font-weight:800;color:#7c3aed}.hero .eyebrow{color:#c4b5fd}
+.hero h1{margin:5px 0 7px;font-size:32px;line-height:1.15;letter-spacing:-.02em}.hero p{max-width:840px;margin:0;color:#e0e7ff;font-size:14px;line-height:1.45}.hero-meta{margin-top:12px;font-size:12px;color:#cbd5e1}
+.wrap{max-width:1180px;margin:20px auto;padding:0 20px 50px}.workflow-group{margin:18px 0 24px;padding:18px;background:#eef2ff;border:1px solid #dbe3f5;border-radius:22px}.group-header{display:flex;align-items:flex-start;justify-content:space-between;gap:18px;padding:2px 4px 14px}.group-header h2{margin:4px 0 0;font-size:25px;line-height:1.2}.group-count{flex:0 0 auto;padding:7px 11px;background:#fff;border:1px solid #d8def0;border-radius:999px;color:#475569;font-size:12px;font-weight:750}
+.workflow-card{display:flex;gap:18px;margin:10px 0;padding:21px;background:#fff;border:1px solid #e2e8f0;border-radius:16px;box-shadow:0 7px 20px rgba(15,23,42,.05)}
+.workflow-number{flex:0 0 44px;font-size:27px;font-weight:850;color:#c4b5fd}.workflow-content{flex:1;min-width:0}.workflow-title{margin:5px 0 13px;font-size:22px;line-height:1.25;color:#0f172a}h3{margin:0 0 6px;font-size:13px;color:#475569}p,li{color:#334155;line-height:1.52}
+.workflow-summary{padding:13px 15px;margin-bottom:13px;background:#f5f3ff;border-left:4px solid #7c3aed;border-radius:9px}.workflow-summary p{margin:0;font-size:15px}
+.context-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:12px 0}.context-panel{padding:13px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:11px}.context-panel p{margin:0;font-size:13px}
+.value-section{margin-top:15px;padding-top:13px;border-top:1px solid #e2e8f0}.value-section ul{margin:6px 0 0;padding-left:21px}.value-section li{margin:4px 0;font-size:13px}
+.supporting-code{margin-top:15px;padding-top:12px;border-top:1px solid #e2e8f0}summary{cursor:pointer;color:#475569;font-weight:700;font-size:13px}.evidence-list{margin-top:10px}.evidence-item{margin:9px 0;padding:10px;background:#0f172a;border-radius:10px;overflow:hidden}.code-location{margin-bottom:7px;color:#c4b5fd;font-size:11px;font-weight:700;word-break:break-all}pre{margin:0;overflow:auto;color:#e2e8f0;font:11px/1.45 Consolas,monospace;white-space:pre}.empty-state{padding:30px;background:#fff;border-radius:16px;text-align:center}
+@media(max-width:760px){.hero{padding:20px 15px 17px}.hero h1{font-size:25px}.wrap{margin-top:12px;padding:0 12px 35px}.workflow-group{padding:12px;margin:12px 0 18px;border-radius:16px}.group-header{display:block;padding:2px 2px 10px}.group-header h2{font-size:21px}.group-count{display:inline-block;margin-top:9px}.workflow-card{display:block;padding:16px;margin:9px 0}.workflow-number{font-size:20px;margin-bottom:3px}.workflow-title{font-size:19px}.context-grid{grid-template-columns:1fr}.workflow-summary{padding:11px 12px}pre{font-size:10px}}
+</style><style id="shipready-customer-navigation-style">
+.shipready-customer-navigation{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:16px auto;padding:12px 16px;max-width:1120px;border:1px solid #cbd5e1;border-radius:12px;background:#f8fafc;font:600 14px Segoe UI,Arial,sans-serif}.shipready-customer-navigation a{display:inline-block;padding:9px 14px;border-radius:8px;background:#4f46e5;color:#fff;text-decoration:none}.shipready-customer-navigation span{color:#475569}@media(max-width:680px){.shipready-customer-navigation{align-items:stretch;flex-direction:column}.shipready-customer-navigation a{text-align:center}}
+</style>
+</head><body>
+<nav class="shipready-customer-navigation" aria-label="Customer report navigation"><span>Business Workflow Map</span><a href="03_business_risk_findings.html">Next: Business Risk Findings →</a></nav>
+<header class="hero"><div class="eyebrow">ShipReady Business Workflows</div><h1>Business Workflow Context</h1>
+<p>Related workflows are grouped into business areas and shown from their entry point through downstream processing and outcomes.</p>
+<div class="hero-meta">weather-dashboard · 3 workflows · 2 areas</div></header>
+<main class="wrap">
+        <section class="workflow-group">
+          <header class="group-header">
+            <div><div class="eyebrow">Workflow area 1</div><h2>Authentication workflows</h2></div>
+            <div class="group-count">2 workflows</div>
+          </header>
+          <div class="group-paths">
+            <article class="workflow-card">
+              <div class="workflow-number">01</div>
+              <div class="workflow-content">
+                <div class="eyebrow">Workflow 1</div>
+                <h3 class="workflow-title">Mobile and Google authentication for the weather dashboard</h3>
+                <section class="workflow-summary"><h3>What this workflow does</h3><p>Browser user requests an OTP, verifies it, receives a JWT-backed authenticated session, and the login is recorded in Firebase-backed user state.</p></section>
+                <div class="context-grid"><section class="context-panel"><h3>Purpose</h3><p>Sign in or register to access persistent dashboard features</p></section><section class="context-panel"><h3>What it produces</h3><p>OTP session / user profile / authentication token</p></section><section class="context-panel"><h3>Who relies on it</h3><p>Browser user and Firebase-backed user record</p></section></div>
+                <section class="value-section"><h3>Why this workflow matters</h3><ul><li>Allows authenticated access to account features</li><li>Creates a recorded login event and persistent user profile state</li><li>Enables later backend history sync and UI personalization</li></ul></section>
+                <details class="supporting-code"><summary>View supporting code</summary><div class="evidence-list"><article class="evidence-item"><div class="code-location">frontend/src/context/AuthContext.jsx · lines 52–107 · loginWithGoogle</div><pre><code>    52 |   const openAuthModal = (mode = &#x27;login&#x27;) =&gt; {
+    53 |     setAuthMode(mode);
+    54 |     setIsAuthModalOpen(true);
+    55 |   };
+    56 | 
+    57 |   const closeAuthModal = () =&gt; {
+    58 |     setIsAuthModalOpen(false);
+    59 |   };
+    60 | 
+    61 |   /**
+    62 |    * Google OAuth Login Handler
+    63 |    * Connects to Firebase Auth + Express Backend + Google Firebase DB
+    64 |    */
+    65 |   const loginWithGoogle = async () =&gt; {
+    66 |     try {
+    67 |       let googleProfile = null;
+    68 | 
+    69 |       // 1. Try Real Firebase Google Sign-In Popup if configured
+    70 |       if (isFirebaseConfigured()) {
+    71 |         try {
+    72 |           const result = await signInWithPopup(auth, googleProvider);
+    73 |           const fbUser = result.user;
+    74 |           googleProfile = {
+    75 |             id: fbUser.uid,
+    76 |             name: fbUser.displayName || &#x27;Google User&#x27;,
+    77 |             email: fbUser.email,
+    78 |             avatar: fbUser.photoURL || &#x27;https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&amp;fit=crop&amp;w=150&amp;q=80&#x27;,
+    79 |             authMethod: &#x27;google&#x27;
+    80 |           };
+    81 |         } catch (popupErr) {
+    82 |           console.warn(&#x27;[Firebase Google Popup Warning]&#x27;, popupErr);
+    83 |           if (popupErr.code === &#x27;auth/popup-closed-by-user&#x27;) {
+       | … additional lines omitted from this preview …</code></pre></article><article class="evidence-item"><div class="code-location">frontend/src/context/AuthContext.jsx · lines 114–185 · requestMobileOTP/verifyMobileOTPAndLogin</div><pre><code>   114 |   const requestMobileOTP = async (phoneNumber, useRealSms = false) =&gt; {
+   115 |     // Call Node Express Backend API first
+   116 |     const backendRes = await sendBackendOtp(phoneNumber);
+   117 |     if (backendRes?.success) {
+   118 |       if (backendRes.code) {
+   119 |         window.dispatchEvent(new CustomEvent(&#x27;simulated_sms_received&#x27;, {
+   120 |           detail: {
+   121 |             phoneNumber,
+   122 |             code: backendRes.code,
+   123 |             message: backendRes.message
+   124 |           }
+   125 |         }));
+   126 |       }
+   127 |       return backendRes;
+   128 |     }
+   129 | 
+   130 |     if (useRealSms) {
+   131 |       if (isFirebaseConfigured()) {
+   132 |         try {
+   133 |           const res = await sendRealSMS(phoneNumber, &#x27;recaptcha-container&#x27;);
+   134 |           setFirebaseConfirmationResult(res.confirmationResult);
+   135 |           return res;
+   136 |         } catch {
+   137 |           console.warn(&#x27;[Firebase SMS fallback to Free SMS Gateway]&#x27;);
+   138 |         }
+   139 |       }
+   140 | 
+   141 |       const freeRes = await sendFreeRealSMS(phoneNumber, fast2smsApiKey);
+   142 |       return freeRes;
+   143 |     }
+   144 | 
+   145 |     return sendMobileOTP(phoneNumber);
+       | … additional lines omitted from this preview …</code></pre></article><article class="evidence-item"><div class="code-location">backend/server.js · lines 29–33 · app.use routes</div><pre><code>    29 | // Register Authentication REST Routes
+    30 | app.use(&#x27;/api/auth&#x27;, authRoutes);
+    31 | 
+    32 | // Register User Profile &amp; History REST Routes
+    33 | app.use(&#x27;/api/user&#x27;, userRoutes);</code></pre></article><article class="evidence-item"><div class="code-location">backend/controllers/authController.js · lines 10–55 · sendOtp/verifyOtp</div><pre><code>    10 | export async function sendOtp(req, res) {
+    11 |   try {
+    12 |     const { phoneNumber } = req.body;
+    13 |     if (!phoneNumber || phoneNumber.trim().length &lt; 6) {
+    14 |       return res.status(400).json({ success: false, message: &#x27;Valid mobile number with country code is required.&#x27; });
+    15 |     }
+    16 | 
+    17 |     const result = await createAndSendOtp(phoneNumber);
+    18 |     return res.status(200).json(result);
+    19 |   } catch (error) {
+    20 |     console.error(&#x27;[Send OTP Error]&#x27;, error);
+    21 |     return res.status(500).json({ success: false, message: error.message || &#x27;Server error sending OTP&#x27; });
+    22 |   }
+    23 | }
+    24 | 
+    25 | /**
+    26 |  * Verify OTP Handler &amp; Issue JWT Token + Record Login Count
+    27 |  */
+    28 | export async function verifyOtp(req, res) {
+    29 |   try {
+    30 |     const { phoneNumber, code } = req.body;
+    31 |     if (!phoneNumber || !code) {
+    32 |       return res.status(400).json({ success: false, message: &#x27;Phone number and 6-digit OTP code are required.&#x27; });
+    33 |     }
+    34 | 
+    35 |     const verification = verifyOtpCode(phoneNumber, code);
+    36 |     if (!verification.success) {
+    37 |       return res.status(400).json(verification);
+    38 |     }
+    39 | 
+    40 |     // Record login &amp; track total sign-in count in Firebase
+    41 |     const userProfile = await recordUserLogin(verification.user);
+       | … additional lines omitted from this preview …</code></pre></article><article class="evidence-item"><div class="code-location">backend/services/otpService.js · lines 6–113 · otpStore/createAndSendOtp/verifyOtpCode</div><pre><code>     6 | // Active OTP store: phoneNumber -&gt; { code, expiresAt, createdTime }
+     7 | const otpStore = new Map();
+     8 | 
+     9 | /**
+    10 |  * Generate 6-digit random OTP
+    11 |  */
+    12 | export function generateOtpCode() {
+    13 |   let code = &#x27;&#x27;;
+    14 |   for (let i = 0; i &lt; 6; i++) {
+    15 |     code += Math.floor(Math.random() * 10);
+    16 |   }
+    17 |   return code;
+    18 | }
+    19 | 
+    20 | /**
+    21 |  * Request &amp; Send OTP
+    22 |  * @param {string} phoneNumber 
+    23 |  */
+    24 | export async function createAndSendOtp(phoneNumber) {
+    25 |   const cleanPhone = phoneNumber.replace(/[\s\-\(\)]/g, &#x27;&#x27;);
+    26 |   const code = generateOtpCode();
+    27 |   const expiresAt = Date.now() + 120 * 1000; // 2 minutes
+    28 | 
+    29 |   otpStore.set(cleanPhone, {
+    30 |     code,
+    31 |     expiresAt,
+    32 |     createdTime: Date.now()
+    33 |   });
+    34 | 
+    35 |   console.log(`[Backend OTP Service] Generated OTP ${code} for ${cleanPhone}`);
+    36 | 
+    37 |   let smsSent = false;
+       | … additional lines omitted from this preview …</code></pre></article><article class="evidence-item"><div class="code-location">backend/services/firebaseDbService.js · lines 17–51 · recordUserLogin</div><pre><code>    17 | export async function recordUserLogin(user) {
+    18 |   const userId = user.id || `user_${user.mobile || user.email}`;
+    19 |   const sanitizedId = userId.replace(/[^a-zA-Z0-9]/g, &#x27;_&#x27;);
+    20 |   
+    21 |   const existing = userDatabase.get(sanitizedId) || {
+    22 |     id: sanitizedId,
+    23 |     name: user.name || &#x27;Weather App User&#x27;,
+    24 |     mobile: user.mobile || &#x27;&#x27;,
+    25 |     email: user.email || &#x27;&#x27;,
+    26 |     authMethod: user.authMethod || &#x27;otp&#x27;,
+    27 |     loginCount: 0,
+    28 |     searchHistory: [],
+    29 |     savedLocations: [],
+    30 |     createdAt: new Date().toISOString()
+    31 |   };
+    32 | 
+    33 |   existing.loginCount += 1;
+    34 |   existing.lastLogin = new Date().toISOString();
+    35 |   userDatabase.set(sanitizedId, existing);
+    36 | 
+    37 |   // Sync with Firebase Realtime Database via REST API
+    38 |   try {
+    39 |     const response = await fetch(`${FIREBASE_DB_URL}/users/${sanitizedId}.json`, {
+    40 |       method: &#x27;PUT&#x27;,
+    41 |       headers: { &#x27;Content-Type&#x27;: &#x27;application/json&#x27; },
+    42 |       body: JSON.stringify(existing)
+    43 |     });
+    44 |     if (response.ok) {
+    45 |       console.log(`[Firebase DB] Recorded login for ${sanitizedId} in Google Firebase. Total Logins: ${existing.loginCount}`);
+    46 |     }
+    47 |   } catch (error) {
+    48 |     console.error(`[Firebase DB Warning] Failed to sync with Firebase cloud: ${error.message}. Saved locally.`);
+       | … additional lines omitted from this preview …</code></pre></article></div></details>
+              </div>
+            </article>
+            <article class="workflow-card">
+              <div class="workflow-number">02</div>
+              <div class="workflow-content">
+                <div class="eyebrow">Workflow 2</div>
+                <h3 class="workflow-title">authentication and OTP delivery</h3>
+                <section class="workflow-summary"><h3>What this workflow does</h3><p>AuthModal user enters a phone number or uses Google sign-in, receives and verifies a 6-digit OTP, and completes login or account creation.</p></section>
+                <div class="context-grid"><section class="context-panel"><h3>Purpose</h3><p>sign in or create an account using Google or mobile verification</p></section><section class="context-panel"><h3>What it produces</h3><p>OTP code and auth session</p></section><section class="context-panel"><h3>Who relies on it</h3><p>weather dashboard user</p></section></div>
+                <section class="value-section"><h3>Why this workflow matters</h3><ul><li>unlocks access to personalized weather features</li><li>confirms possession of the phone number</li><li>supports guest-to-registered user conversion</li></ul></section>
+                <details class="supporting-code"><summary>View supporting code</summary><div class="evidence-list"><article class="evidence-item"><div class="code-location">frontend/src/components/ui/AuthModal.jsx · lines 15–24 · AuthModal</div><pre><code>    15 | export const AuthModal = ({ isOpen, onClose, initialAutoFillCode, isAutoPrompted }) =&gt; {
+    16 |   const {
+    17 |     authMode,
+    18 |     setAuthMode,
+    19 |     loginWithGoogle,
+    20 |     requestMobileOTP,
+    21 |     verifyMobileOTPAndLogin,
+    22 |     resendMobileOTP,
+    23 |     isFirebaseConfigured
+    24 |   } = useAuth();</code></pre></article><article class="evidence-item"><div class="code-location">frontend/src/components/ui/AuthModal.jsx · lines 244–333 · AuthModal</div><pre><code>   244 |         {/* Header Title */}
+   245 |         &lt;div className=&quot;text-center mb-6&quot;&gt;
+   246 |           &lt;div className=&quot;inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-blue-500/10 border border-blue-400/20 text-blue-300 text-xs font-semibold mb-3&quot;&gt;
+   247 |             &lt;Sparkles className=&quot;w-3.5 h-3.5&quot; /&gt;
+   248 |             Atmosphere Weather Account
+   249 |           &lt;/div&gt;
+   250 |           &lt;h2 className=&quot;text-2xl sm:text-3xl font-extrabold tracking-tight&quot;&gt;
+   251 |             {authMode === &#x27;login&#x27; ? &#x27;Welcome Back&#x27; : &#x27;Create Account&#x27;}
+   252 |           &lt;/h2&gt;
+   253 |           &lt;p className=&quot;text-xs sm:text-sm text-slate-300 mt-1&quot;&gt;
+   254 |             {authMode === &#x27;login&#x27;
+   255 |               ? &#x27;Access live forecast alerts, saved locations &amp; custom themes&#x27;
+   256 |               : &#x27;Sign up to unlock personalized condition-reactive weather alerts&#x27;}
+   257 |           &lt;/p&gt;
+   258 |         &lt;/div&gt;
+   259 | 
+   260 |         {/* Login / Sign Up Tab Switcher */}
+   261 |         &lt;div className=&quot;flex rounded-2xl glass-pill p-1 mb-5 border border-white/10&quot;&gt;
+   262 |           &lt;button
+   263 |             onClick={() =&gt; {
+   264 |               setAuthMode(&#x27;login&#x27;);
+   265 |               resetModalState();
+   266 |             }}
+   267 |             className={`flex-1 py-2 text-xs font-bold rounded-xl transition-all ${
+   268 |               authMode === &#x27;login&#x27;
+   269 |                 ? &#x27;bg-blue-600 text-white shadow-lg&#x27;
+   270 |                 : &#x27;text-slate-400 hover:text-white&#x27;
+   271 |             }`}
+   272 |           &gt;
+   273 |             Sign In
+   274 |           &lt;/button&gt;
+   275 |           &lt;button
+       | … additional lines omitted from this preview …</code></pre></article><article class="evidence-item"><div class="code-location">frontend/src/components/ui/AuthModal.jsx · lines 70–111 · handleSendOTP</div><pre><code>    70 |   const fullPhoneString = `${selectedCountry.code}${phoneNumber.trim()}`;
+    71 | 
+    72 |   // Handle requesting OTP
+    73 |   const handleSendOTP = async (e) =&gt; {
+    74 |     e?.preventDefault();
+    75 |     setError(&#x27;&#x27;);
+    76 |     setSuccessMsg(&#x27;&#x27;);
+    77 | 
+    78 |     if (!phoneNumber || phoneNumber.trim().length &lt; 7) {
+    79 |       setError(&#x27;Please enter a valid mobile phone number&#x27;);
+    80 |       return;
+    81 |     }
+    82 | 
+    83 |     if (authMode === &#x27;signup&#x27; &amp;&amp; !fullName.trim()) {
+    84 |       setError(&#x27;Please enter your full name&#x27;);
+    85 |       return;
+    86 |     }
+    87 | 
+    88 |     setLoading(true);
+    89 | 
+    90 |     try {
+    91 |       const res = await requestMobileOTP(fullPhoneString, useRealSms);
+    92 |       if (res?.success || res?.confirmationResult) {
+    93 |         setStep(&#x27;otp&#x27;);
+    94 |         setTimer(60);
+    95 |         setIsTimerActive(true);
+    96 |         if (useRealSms &amp;&amp; isFirebaseConfigured) {
+    97 |           setSuccessMsg(`Real SMS code sent to your phone ${fullPhoneString}!`);
+    98 |         } else {
+    99 |           setSuccessMsg(`OTP sent to ${fullPhoneString}! Check incoming SMS banner on screen.`);
+   100 |         }
+   101 |         
+       | … additional lines omitted from this preview …</code></pre></article><article class="evidence-item"><div class="code-location">frontend/src/components/ui/AuthModal.jsx · lines 538–552 · handleVerifyOTP</div><pre><code>   538 |             {/* Verify Action Button */}
+   539 |             &lt;button
+   540 |               type=&quot;submit&quot;
+   541 |               disabled={loading}
+   542 |               className=&quot;w-full py-3.5 rounded-2xl bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-slate-950 font-extrabold text-sm flex items-center justify-center gap-2 transition-all shadow-lg shadow-emerald-500/25 active:scale-98 disabled:opacity-50&quot;
+   543 |             &gt;
+   544 |               {loading ? (
+   545 |                 &lt;div className=&quot;w-5 h-5 border-2 border-slate-950/30 border-t-slate-950 rounded-full animate-spin&quot; /&gt;
+   546 |               ) : (
+   547 |                 &lt;&gt;
+   548 |                   &lt;ShieldCheck className=&quot;w-5 h-5&quot; /&gt;
+   549 |                   &lt;span&gt;Verify &amp; {authMode === &#x27;login&#x27; ? &#x27;Sign In&#x27; : &#x27;Create Account&#x27;}&lt;/span&gt;
+   550 |                 &lt;/&gt;
+   551 |               )}
+   552 |             &lt;/button&gt;</code></pre></article><article class="evidence-item"><div class="code-location">frontend/src/components/ui/AuthModal.jsx · lines 26–27 · AuthModal.step</div><pre><code>    26 |   // Mobile Auth Flow States: &#x27;phone&#x27; | &#x27;otp&#x27;
+    27 |   const [step, setStep] = useState(&#x27;phone&#x27;);</code></pre></article><article class="evidence-item"><div class="code-location">frontend/src/components/ui/AuthModal.jsx · lines 45–52 · initialAutoFillCode effect</div><pre><code>    45 |   // Auto-fill handling from toast
+    46 |   useEffect(() =&gt; {
+    47 |     if (initialAutoFillCode &amp;&amp; initialAutoFillCode.length === 6) {
+    48 |       setStep(&#x27;otp&#x27;);
+    49 |       const digits = initialAutoFillCode.split(&#x27;&#x27;);
+    50 |       setOtpDigits(digits);
+    51 |     }
+    52 |   }, [initialAutoFillCode]);</code></pre></article></div></details>
+              </div>
+            </article></div>
+        </section>
+        <section class="workflow-group">
+          <header class="group-header">
+            <div><div class="eyebrow">Workflow area 2</div><h2>Weather workflows</h2></div>
+            <div class="group-count">1 workflow</div>
+          </header>
+          <div class="group-paths">
+            <article class="workflow-card">
+              <div class="workflow-number">03</div>
+              <div class="workflow-content">
+                <div class="eyebrow">Workflow 3</div>
+                <h3 class="workflow-title">weather visualization and forecast presentation</h3>
+                <section class="workflow-summary"><h3>What this workflow does</h3><p>WeatherCanvas reads weather state and renders the appropriate animated weather scene, lighting, and fallback error scene for the dashboard.</p></section>
+                <div class="context-grid"><section class="context-panel"><h3>Purpose</h3><p>view an animated weather backdrop that matches current conditions</p></section><section class="context-panel"><h3>What it produces</h3><p>weather scene configuration and forecast-derived visual state</p></section><section class="context-panel"><h3>Who relies on it</h3><p>dashboard visitor</p></section></div>
+                <section class="value-section"><h3>Why this workflow matters</h3><ul><li>improves the readability and feel of current conditions</li><li>renders a condition-specific background without blocking the rest of the UI</li><li>shows an explicit error scene when weather state fails</li></ul></section>
+                <details class="supporting-code"><summary>View supporting code</summary><div class="evidence-list"><article class="evidence-item"><div class="code-location">frontend/src/components/3d/WeatherCanvas.jsx · lines 23–99 · WeatherCanvas</div><pre><code>    23 | export const WeatherCanvas = () =&gt; {
+    24 |   const { currentSceneConfig, weatherData, error, isTransitioning } = useWeather();
+    25 |   const scene = currentSceneConfig.scene;
+    26 |   const windSpeed = weatherData?.current?.windSpeed || 12;
+    27 | 
+    28 |   return (
+    29 |     &lt;div
+    30 |       className={`fixed inset-0 pointer-events-none transition-opacity duration-500 ease-in-out ${
+    31 |         isTransitioning ? &#x27;opacity-40&#x27; : &#x27;opacity-100&#x27;
+    32 |       }`}
+    33 |       style={{ zIndex: 0 }}
+    34 |     &gt;
+    35 |       &lt;Canvas
+    36 |         dpr={[1, 1.25]} // Cap DPI to 1.25 max for silky 60+ FPS performance
+    37 |         camera={{ position: [0, 0, 10], fov: 60 }}
+    38 |         gl={{
+    39 |           antialias: false, // Disable antialiasing for maximum GPU efficiency
+    40 |           powerPreference: &#x27;high-performance&#x27;,
+    41 |           stencil: false,
+    42 |           depth: true,
+    43 |         }}
+    44 |       &gt;
+    45 |         &lt;Suspense fallback={null}&gt;
+    46 |           &lt;BackgroundSky skyBottom={scene.skyBottom} /&gt;
+    47 |           &lt;CameraParallax factor={0.4} /&gt;
+    48 | 
+    49 |           {error ? (
+    50 |             &lt;ErrorScene /&gt;
+    51 |           ) : (
+    52 |             &lt;&gt;
+    53 |               &lt;WeatherLighting
+    54 |                 isDay={scene.isDay}
+       | … additional lines omitted from this preview …</code></pre></article><article class="evidence-item"><div class="code-location">frontend/src/components/ui/HourlyStrip.jsx · lines 7–77 · HourlyStrip</div><pre><code>     7 | export const HourlyStrip = () =&gt; {
+     8 |   const { weatherData, convertTemp } = useWeather();
+     9 | 
+    10 |   if (!weatherData || !weatherData.hourly) return null;
+    11 | 
+    12 |   const hourly = weatherData.hourly;
+    13 | 
+    14 |   return (
+    15 |     &lt;div className=&quot;w-full max-w-7xl mx-auto px-4 py-2 z-20 relative&quot;&gt;
+    16 |       &lt;motion.div
+    17 |         initial={{ opacity: 0, y: 25 }}
+    18 |         animate={{ opacity: 1, y: 0 }}
+    19 |         transition={{ duration: 0.5, delay: 0.1 }}
+    20 |         className=&quot;glass-panel p-5 rounded-3xl border border-white/15&quot;
+    21 |       &gt;
+    22 |         &lt;div className=&quot;flex items-center justify-between mb-4 px-1&quot;&gt;
+    23 |           &lt;h3 className=&quot;text-sm font-bold text-white flex items-center gap-2&quot;&gt;
+    24 |             &lt;Clock className=&quot;w-4 h-4 text-blue-400&quot; /&gt;
+    25 |             24-Hour Forecast &amp; Precipitation Timeline
+    26 |           &lt;/h3&gt;
+    27 |           &lt;span className=&quot;text-xs text-slate-300&quot;&gt;Hourly Telemetry&lt;/span&gt;
+    28 |         &lt;/div&gt;
+    29 | 
+    30 |         {/* Horizontal Scrollable Carousel with Framer Motion */}
+    31 |         &lt;div className=&quot;flex items-center gap-3 overflow-x-auto pb-3 pt-1 scrollbar-thin scrollbar-thumb-white/20&quot;&gt;
+    32 |           {hourly.map((item, idx) =&gt; {
+    33 |             const timeObj = new Date(item.time);
+    34 |             const hourFormatted = idx === 0 ? &#x27;Now&#x27; : timeObj.toLocaleTimeString(&#x27;en-US&#x27;, { hour: &#x27;numeric&#x27; });
+    35 |             const wmo = WMO_CODES[item.code] || WMO_CODES[0];
+    36 |             const tempVal = convertTemp(item.temp);
+    37 |             const pop = item.pop || 0;
+    38 | 
+       | … additional lines omitted from this preview …</code></pre></article><article class="evidence-item"><div class="code-location">frontend/src/components/3d/WeatherCanvas.jsx · lines 23–27 · WeatherCanvas currentSceneConfig</div><pre><code>    23 | export const WeatherCanvas = () =&gt; {
+    24 |   const { currentSceneConfig, weatherData, error, isTransitioning } = useWeather();
+    25 |   const scene = currentSceneConfig.scene;
+    26 |   const windSpeed = weatherData?.current?.windSpeed || 12;
+    27 | </code></pre></article><article class="evidence-item"><div class="code-location">frontend/src/components/3d/WeatherCanvas.jsx · lines 23–87 · WeatherCanvas</div><pre><code>    23 | export const WeatherCanvas = () =&gt; {
+    24 |   const { currentSceneConfig, weatherData, error, isTransitioning } = useWeather();
+    25 |   const scene = currentSceneConfig.scene;
+    26 |   const windSpeed = weatherData?.current?.windSpeed || 12;
+    27 | 
+    28 |   return (
+    29 |     &lt;div
+    30 |       className={`fixed inset-0 pointer-events-none transition-opacity duration-500 ease-in-out ${
+    31 |         isTransitioning ? &#x27;opacity-40&#x27; : &#x27;opacity-100&#x27;
+    32 |       }`}
+    33 |       style={{ zIndex: 0 }}
+    34 |     &gt;
+    35 |       &lt;Canvas
+    36 |         dpr={[1, 1.25]} // Cap DPI to 1.25 max for silky 60+ FPS performance
+    37 |         camera={{ position: [0, 0, 10], fov: 60 }}
+    38 |         gl={{
+    39 |           antialias: false, // Disable antialiasing for maximum GPU efficiency
+    40 |           powerPreference: &#x27;high-performance&#x27;,
+    41 |           stencil: false,
+    42 |           depth: true,
+    43 |         }}
+    44 |       &gt;
+    45 |         &lt;Suspense fallback={null}&gt;
+    46 |           &lt;BackgroundSky skyBottom={scene.skyBottom} /&gt;
+    47 |           &lt;CameraParallax factor={0.4} /&gt;
+    48 | 
+    49 |           {error ? (
+    50 |             &lt;ErrorScene /&gt;
+    51 |           ) : (
+    52 |             &lt;&gt;
+    53 |               &lt;WeatherLighting
+    54 |                 isDay={scene.isDay}
+       | … additional lines omitted from this preview …</code></pre></article><article class="evidence-item"><div class="code-location">frontend/src/components/3d/WeatherLighting.jsx · lines 25–40 · WeatherLighting</div><pre><code>    25 |   return (
+    26 |     &lt;&gt;
+    27 |       &lt;ambientLight color={ambientColor || (isDay ? &#x27;#ffffff&#x27; : &#x27;#1e293b&#x27;)} intensity={isDay ? 0.75 : 0.3} /&gt;
+    28 | 
+    29 |       {/* Main Solar / Lunar Light without expensive shadow mapping */}
+    30 |       &lt;directionalLight
+    31 |         position={isDay ? [12, 18, 10] : [-10, 15, -8]}
+    32 |         intensity={sunIntensity}
+    33 |         color={sunColor || (isDay ? &#x27;#ffb703&#x27; : &#x27;#94a3b8&#x27;)}
+    34 |       /&gt;
+    35 | 
+    36 |       &lt;hemisphereLight
+    37 |         skyColor={isDay ? &#x27;#93c5fd&#x27; : &#x27;#0f172a&#x27;}
+    38 |         groundColor={isDay ? &#x27;#1e3a8a&#x27; : &#x27;#020617&#x27;}
+    39 |         intensity={0.35}
+    40 |       /&gt;</code></pre></article><article class="evidence-item"><div class="code-location">frontend/src/components/3d/scenes/NightScene.jsx · lines 6–18 · NightScene</div><pre><code>     6 | export const NightScene = ({ isDay = false }) =&gt; {
+     7 |   const moonRef = useRef();
+     8 | 
+     9 |   useFrame((_, delta) =&gt; {
+    10 |     if (moonRef.current) {
+    11 |       moonRef.current.rotation.y += delta * 0.03;
+    12 |     }
+    13 |   });
+    14 | 
+    15 |   if (isDay) return null;
+    16 | 
+    17 |   return (
+    18 |     &lt;&gt;</code></pre></article></div></details>
+              </div>
+            </article></div>
+        </section></main><nav class="shipready-customer-navigation" aria-label="Customer report navigation"><span>Business Workflow Map</span><a href="03_business_risk_findings.html">Next: Business Risk Findings →</a></nav>
+</body></html>

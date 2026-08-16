@@ -1,0 +1,1128 @@
+{
+  "schema_version": "shipready.customer_business_flaw_report.v2",
+  "generated_at": "2026-08-16T03:29:09.025704+00:00",
+  "runner_version": "shipready-step4-business-flaw-v3.0-structural-hotspots",
+  "model": "gpt-5.4",
+  "repository": {
+    "repository_id": "repository_ae6e29beaaedcf4f",
+    "repository_name": "weather-dashboard",
+    "scan_completeness": "COMPLETE",
+    "repository_wide_conclusions_allowed": false,
+    "coverage_warnings": [
+      "Material source coverage gate: 19/45 significant source files represented (42.2%); repository-wide absence conclusions are prohibited."
+    ]
+  },
+  "governance": {
+    "business_impact_gate": "STRICT",
+    "business_rule_evidence_gate": "RELAXED_TO_WORKFLOW_INFERRED",
+    "customer_language": "DECISIVE_AND_CONDITION_BOUNDED",
+    "step3_reinvestigation": "NOT_REPEATED",
+    "runtime_tests": "NOT_EXECUTED"
+  },
+  "executive_summary": {
+    "published_flaw_count": 1,
+    "critical_count": 0,
+    "high_count": 1,
+    "medium_count": 0,
+    "strong_evidence_count": 1,
+    "supported_evidence_count": 0,
+    "bottom_line": "The authentication flow creates real signed-in sessions from identity material that the requester can supply or read back, so public callers complete login without proving phone or Google account ownership."
+  },
+  "published_flaws": [
+    {
+      "flaw_id": "flaw_01",
+      "title": "Authentication endpoints issue sessions without verified identity proof",
+      "bottom_line": "OTP requests return the verification code to the requester, and Google sign-in accepts caller-supplied or fabricated profiles, so an unauthenticated visitor completes login and receives a persisted authenticated session.",
+      "verdict": "CONFIRMED_BUSINESS_FLAW",
+      "evidence_strength": "STRONG",
+      "severity": "HIGH",
+      "business_capability": "Mobile and Google authentication for the weather dashboard",
+      "trigger": {
+        "statement": "A visitor uses the public OTP or Google sign-in endpoints and supplies the identity material that the same flow exposes or accepts.",
+        "evidence_refs": [
+          "evidence_b1e7991fff1d9499",
+          "evidence_89117420a1c8279d",
+          "evidence_355797964daba6df",
+          "evidence_dd2605b3bc15f918",
+          "evidence_c5c358fac6853579",
+          "evidence_7262050ebf3599e2",
+          "evidence_8be7fdb9c06c7b86"
+        ]
+      },
+      "observed_behavior": {
+        "statement": "The OTP path returns the generated code in the request flow and the Google path accepts a posted or synthesized profile, then the backend records login state and returns a JWT-backed success response.",
+        "evidence_refs": [
+          "evidence_dd2605b3bc15f918",
+          "evidence_355797964daba6df",
+          "evidence_84edae2785b06db8",
+          "evidence_c5c358fac6853579",
+          "evidence_9ab737dbb14ea2f7",
+          "evidence_7262050ebf3599e2",
+          "evidence_8be7fdb9c06c7b86",
+          "evidence_922998d7d7a1bcdd",
+          "evidence_fe35ad94d379746b",
+          "evidence_068b77f66e5e1233"
+        ]
+      },
+      "business_rule": {
+        "statement": "Sign-in must require proof of control of the phone number or a verified Google identity before a session token and user record are created.",
+        "basis": "UNIVERSAL_INTEGRITY",
+        "evidence_refs": [
+          "evidence_89117420a1c8279d",
+          "evidence_355797964daba6df",
+          "evidence_8be7fdb9c06c7b86",
+          "evidence_84edae2785b06db8",
+          "evidence_c5c358fac6853579"
+        ]
+      },
+      "business_impact": {
+        "immediate_outcome": "The service returns successful login responses, issues JWT-backed sessions, and writes login state for identities that were not verified by an external proof step.",
+        "affected_party_or_asset": "Authenticated dashboard access, persisted user profiles, login counters, and user-linked history state.",
+        "business_downside": "Unauthenticated visitors obtain signed-in access and creates or update persisted account state under chosen phone or Google identities.",
+        "scale_mechanism": "The behavior is reachable through public authentication endpoints and completes in the normal sign-in workflow.",
+        "detection_difficulty": "Successful responses and normal login records look the same as legitimate sign-ins.",
+        "reversibility": "Issued sessions expire later, but created profiles, login counters, and stored history require explicit cleanup.",
+        "impact_basis": "DIRECT_CODE_CONSEQUENCE",
+        "evidence_refs": [
+          "evidence_b1e7991fff1d9499",
+          "evidence_89117420a1c8279d",
+          "evidence_922998d7d7a1bcdd",
+          "evidence_8be7fdb9c06c7b86",
+          "evidence_fe35ad94d379746b",
+          "evidence_068b77f66e5e1233",
+          "evidence_8cbfce77cd39a120",
+          "evidence_f3eed009db6cc8a1"
+        ]
+      },
+      "applicable_lens_ids": [
+        "G1-05",
+        "G1-13",
+        "G1-15"
+      ],
+      "business_path_nodes": [
+        {
+          "node_id": "node_1",
+          "node_type": "ACTOR",
+          "business_label": "Visitor",
+          "business_component": "Authentication",
+          "evidence_refs": [
+            "evidence_b1e7991fff1d9499",
+            "evidence_89117420a1c8279d"
+          ]
+        },
+        {
+          "node_id": "node_2",
+          "node_type": "ACTION",
+          "business_label": "Submit sign-in request",
+          "business_component": "Authentication",
+          "evidence_refs": [
+            "evidence_355797964daba6df",
+            "evidence_8be7fdb9c06c7b86",
+            "evidence_7262050ebf3599e2"
+          ]
+        },
+        {
+          "node_id": "node_3",
+          "node_type": "CONDITION",
+          "business_label": "Identity proof is caller-supplied or returned to the same requester",
+          "business_component": "Authentication",
+          "evidence_refs": [
+            "evidence_dd2605b3bc15f918",
+            "evidence_84edae2785b06db8",
+            "evidence_c5c358fac6853579",
+            "evidence_9ab737dbb14ea2f7",
+            "evidence_7262050ebf3599e2"
+          ]
+        },
+        {
+          "node_id": "node_4",
+          "node_type": "CODE_OUTCOME",
+          "business_label": "Backend accepts sign-in and records login",
+          "business_component": "Authentication",
+          "evidence_refs": [
+            "evidence_355797964daba6df",
+            "evidence_8be7fdb9c06c7b86",
+            "evidence_922998d7d7a1bcdd",
+            "evidence_fe35ad94d379746b",
+            "evidence_068b77f66e5e1233"
+          ]
+        },
+        {
+          "node_id": "node_5",
+          "node_type": "BUSINESS_RESOURCE",
+          "business_label": "Session token and persisted user profile",
+          "business_component": "Session and user state",
+          "evidence_refs": [
+            "evidence_922998d7d7a1bcdd",
+            "evidence_fe35ad94d379746b",
+            "evidence_8cbfce77cd39a120"
+          ]
+        },
+        {
+          "node_id": "node_6",
+          "node_type": "BUSINESS_DOWNSIDE",
+          "business_label": "Unverified user gains authenticated access and alters account state",
+          "business_component": "Protected dashboard features",
+          "evidence_refs": [
+            "evidence_2a29179b2866bb65",
+            "evidence_f3eed009db6cc8a1",
+            "evidence_8cbfce77cd39a120"
+          ]
+        }
+      ],
+      "business_path_edges": [
+        {
+          "source_node_id": "node_1",
+          "target_node_id": "node_2",
+          "relationship": "initiates",
+          "edge_basis": "CODE_ESTABLISHED",
+          "evidence_refs": [
+            "evidence_b1e7991fff1d9499",
+            "evidence_89117420a1c8279d"
+          ]
+        },
+        {
+          "source_node_id": "node_2",
+          "target_node_id": "node_3",
+          "relationship": "provides",
+          "edge_basis": "CODE_ESTABLISHED",
+          "evidence_refs": [
+            "evidence_dd2605b3bc15f918",
+            "evidence_c5c358fac6853579",
+            "evidence_7262050ebf3599e2"
+          ]
+        },
+        {
+          "source_node_id": "node_3",
+          "target_node_id": "node_4",
+          "relationship": "is trusted by",
+          "edge_basis": "CODE_ESTABLISHED",
+          "evidence_refs": [
+            "evidence_355797964daba6df",
+            "evidence_8be7fdb9c06c7b86",
+            "evidence_922998d7d7a1bcdd"
+          ]
+        },
+        {
+          "source_node_id": "node_4",
+          "target_node_id": "node_5",
+          "relationship": "creates",
+          "edge_basis": "CODE_ESTABLISHED",
+          "evidence_refs": [
+            "evidence_922998d7d7a1bcdd",
+            "evidence_fe35ad94d379746b",
+            "evidence_068b77f66e5e1233"
+          ]
+        },
+        {
+          "source_node_id": "node_5",
+          "target_node_id": "node_6",
+          "relationship": "grants",
+          "edge_basis": "BUSINESS_CONSEQUENCE",
+          "evidence_refs": [
+            "evidence_2a29179b2866bb65",
+            "evidence_f3eed009db6cc8a1",
+            "evidence_8cbfce77cd39a120"
+          ]
+        }
+      ],
+      "code_path_explanation": [
+        "The backend exposes public POST routes for /api/auth/send-otp, /api/auth/verify-otp, and /api/auth/google.",
+        "The OTP send handler returns the service result from createAndSendOtp, and that service includes the generated code in its returned object; the frontend also reads backendRes.code and surfaces it in the request flow.",
+        "The OTP verify handler only checks that the submitted code matches the stored session, then records login state and returns a JWT and user object.",
+        "The Google login flow posts either the Firebase popup result or a synthesized fallback profile to the backend, and the backend accepts req.body.profile or creates its own default profile, records login, signs a JWT, and returns success."
+      ],
+      "counterevidence_checked": [
+        {
+          "item_checked": "OTP verification requires an active session, an unexpired code, and an exact code match.",
+          "result": "Those checks validate the same code that the request flow returns to the requester.",
+          "conclusion": "DOES_NOT_PREVENT",
+          "evidence_refs": [
+            "evidence_46d300b94957d697",
+            "evidence_62624b1973f1277b",
+            "evidence_dd2605b3bc15f918",
+            "evidence_355797964daba6df"
+          ]
+        },
+        {
+          "item_checked": "Google popup close handling returns a failed client response.",
+          "result": "Only the user-closed popup branch returns failure; other popup failures fall back to a synthesized profile, and the backend also defaults a profile when none is supplied.",
+          "conclusion": "DOES_NOT_PREVENT",
+          "evidence_refs": [
+            "evidence_9ab737dbb14ea2f7",
+            "evidence_c5c358fac6853579",
+            "evidence_8be7fdb9c06c7b86"
+          ]
+        }
+      ],
+      "control_objective": "Require independently verified identity evidence before issuing an authenticated session or persisting login state.",
+      "acceptance_check": {
+        "given": "an unauthenticated caller who can reach the public authentication endpoints",
+        "when": "the caller reads the OTP from the request flow or submits a fabricated Google profile and completes the corresponding sign-in request, the application returns a successful authenticated response and records the login as that identity.",
+        "then": "the sign-in is rejected unless the caller presents externally verified proof for the claimed phone number or Google account"
+      },
+      "source_insight_ids": [
+        "insight_02b58588c6045a95",
+        "insight_e693e0a9e7663821"
+      ],
+      "source_path_ids": [
+        "business_path_0c6021d560d72aa8"
+      ],
+      "evidence_refs": [
+        "evidence_b1e7991fff1d9499",
+        "evidence_89117420a1c8279d",
+        "evidence_355797964daba6df",
+        "evidence_dd2605b3bc15f918",
+        "evidence_84edae2785b06db8",
+        "evidence_46d300b94957d697",
+        "evidence_62624b1973f1277b",
+        "evidence_c5c358fac6853579",
+        "evidence_9ab737dbb14ea2f7",
+        "evidence_7262050ebf3599e2",
+        "evidence_8be7fdb9c06c7b86",
+        "evidence_922998d7d7a1bcdd",
+        "evidence_fe35ad94d379746b",
+        "evidence_068b77f66e5e1233",
+        "evidence_8cbfce77cd39a120",
+        "evidence_2a29179b2866bb65",
+        "evidence_f3eed009db6cc8a1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "evidence_068b77f66e5e1233",
+          "chunk_id": "chunk_4327ecf70ef432e5",
+          "file_path": "backend/services/firebaseDbService.js",
+          "start_line": 21,
+          "end_line": 35,
+          "symbol_or_node_id": "recordUserLogin",
+          "original_evidence_level": "E1_DIRECT_CODE",
+          "canonical_evidence_level": "E1_DIRECT_CODE",
+          "evidence_summary": "recordUserLogin creates or loads a cached profile, increments loginCount, and sets lastLogin.",
+          "source_request_id": "semantic_pack_001_part_01",
+          "source_semantic_pack_id": "semantic_pack_001",
+          "validation_status": "VALID",
+          "redaction_applied": false
+        },
+        {
+          "evidence_id": "evidence_2a29179b2866bb65",
+          "chunk_id": "chunk_0a63a7353ed30f15",
+          "file_path": "frontend/src/context/AuthContext.jsx",
+          "start_line": 52,
+          "end_line": 185,
+          "symbol_or_node_id": "AuthProvider",
+          "original_evidence_level": "E1_DIRECT_CODE",
+          "canonical_evidence_level": "E1_DIRECT_CODE",
+          "evidence_summary": "Frontend auth context orchestrates Google login, OTP request/verification, and local auth state.",
+          "source_request_id": "semantic_pack_001_part_01",
+          "source_semantic_pack_id": "semantic_pack_001",
+          "validation_status": "VALID",
+          "redaction_applied": false
+        },
+        {
+          "evidence_id": "evidence_355797964daba6df",
+          "chunk_id": "chunk_23e56d4ae6618b6b",
+          "file_path": "backend/controllers/authController.js",
+          "start_line": 10,
+          "end_line": 55,
+          "symbol_or_node_id": "sendOtp/verifyOtp",
+          "original_evidence_level": "E1_DIRECT_CODE",
+          "canonical_evidence_level": "E1_DIRECT_CODE",
+          "evidence_summary": "Controller validates OTP request, verifies codes, records login, and returns token and user.",
+          "source_request_id": "semantic_pack_001_part_01",
+          "source_semantic_pack_id": "semantic_pack_001",
+          "validation_status": "VALID",
+          "redaction_applied": false
+        },
+        {
+          "evidence_id": "evidence_46d300b94957d697",
+          "chunk_id": "chunk_145cf58000abc4b5",
+          "file_path": "backend/services/otpService.js",
+          "start_line": 83,
+          "end_line": 101,
+          "symbol_or_node_id": "verifyOtpCode",
+          "original_evidence_level": "E1_DIRECT_CODE",
+          "canonical_evidence_level": "E1_DIRECT_CODE",
+          "evidence_summary": "Backend OTP verification performs the same active-session, expiry, and code checks.",
+          "source_request_id": "semantic_pack_001_part_01",
+          "source_semantic_pack_id": "semantic_pack_001",
+          "validation_status": "VALID",
+          "redaction_applied": false
+        },
+        {
+          "evidence_id": "evidence_62624b1973f1277b",
+          "chunk_id": "chunk_145cf58000abc4b5",
+          "file_path": "backend/services/otpService.js",
+          "start_line": 91,
+          "end_line": 101,
+          "symbol_or_node_id": "verifyOtpCode",
+          "original_evidence_level": "E1_DIRECT_CODE",
+          "canonical_evidence_level": "E1_DIRECT_CODE",
+          "evidence_summary": "Expired OTPs are deleted and successful verification clears the session.",
+          "source_request_id": "semantic_pack_001_part_01",
+          "source_semantic_pack_id": "semantic_pack_001",
+          "validation_status": "VALID",
+          "redaction_applied": false
+        },
+        {
+          "evidence_id": "evidence_7262050ebf3599e2",
+          "chunk_id": "chunk_0a63a7353ed30f15",
+          "file_path": "frontend/src/context/AuthContext.jsx",
+          "start_line": 65,
+          "end_line": 102,
+          "symbol_or_node_id": "loginWithGoogle",
+          "original_evidence_level": "E1_DIRECT_CODE",
+          "canonical_evidence_level": "E1_DIRECT_CODE",
+          "evidence_summary": "Google login posts a profile object to the backend.",
+          "source_request_id": "semantic_pack_001_part_01",
+          "source_semantic_pack_id": "semantic_pack_001",
+          "validation_status": "VALID",
+          "redaction_applied": false
+        },
+        {
+          "evidence_id": "evidence_84edae2785b06db8",
+          "chunk_id": "chunk_0a63a7353ed30f15",
+          "file_path": "frontend/src/context/AuthContext.jsx",
+          "start_line": 114,
+          "end_line": 185,
+          "symbol_or_node_id": "requestMobileOTP/verifyMobileOTPAndLogin",
+          "original_evidence_level": "E1_DIRECT_CODE",
+          "canonical_evidence_level": "E1_DIRECT_CODE",
+          "evidence_summary": "Mobile OTP request and verification call backend endpoints before local fallback handling.",
+          "source_request_id": "semantic_pack_001_part_01",
+          "source_semantic_pack_id": "semantic_pack_001",
+          "validation_status": "VALID",
+          "redaction_applied": false
+        },
+        {
+          "evidence_id": "evidence_89117420a1c8279d",
+          "chunk_id": "chunk_0179c37bba243757",
+          "file_path": "backend/routes/authRoutes.js",
+          "start_line": 6,
+          "end_line": 13,
+          "symbol_or_node_id": "router.post routes",
+          "original_evidence_level": "E1_DIRECT_CODE",
+          "canonical_evidence_level": "E1_DIRECT_CODE",
+          "evidence_summary": "Defines POST routes for send-otp, verify-otp, and google auth.",
+          "source_request_id": "semantic_pack_001_part_01",
+          "source_semantic_pack_id": "semantic_pack_001",
+          "validation_status": "VALID",
+          "redaction_applied": false
+        },
+        {
+          "evidence_id": "evidence_8be7fdb9c06c7b86",
+          "chunk_id": "chunk_23e56d4ae6618b6b",
+          "file_path": "backend/controllers/authController.js",
+          "start_line": 10,
+          "end_line": 97,
+          "symbol_or_node_id": "sendOtp/verifyOtp/googleAuth",
+          "original_evidence_level": "E1_DIRECT_CODE",
+          "canonical_evidence_level": "E1_DIRECT_CODE",
+          "evidence_summary": "Controller handles OTP issuance, verification, login recording, JWT generation, and Google auth persistence.",
+          "source_request_id": "semantic_pack_001_part_01",
+          "source_semantic_pack_id": "semantic_pack_001",
+          "validation_status": "VALID",
+          "redaction_applied": false
+        },
+        {
+          "evidence_id": "evidence_8cbfce77cd39a120",
+          "chunk_id": "chunk_4327ecf70ef432e5",
+          "file_path": "backend/services/firebaseDbService.js",
+          "start_line": 17,
+          "end_line": 83,
+          "symbol_or_node_id": "recordUserLogin/saveSearchHistory",
+          "original_evidence_level": "E1_DIRECT_CODE",
+          "canonical_evidence_level": "E1_DIRECT_CODE",
+          "evidence_summary": "Firebase persistence layer stores login counts and search history using sanitized user keys.",
+          "source_request_id": "semantic_pack_001_part_01",
+          "source_semantic_pack_id": "semantic_pack_001",
+          "validation_status": "VALID",
+          "redaction_applied": false
+        },
+        {
+          "evidence_id": "evidence_922998d7d7a1bcdd",
+          "chunk_id": "chunk_23e56d4ae6618b6b",
+          "file_path": "backend/controllers/authController.js",
+          "start_line": 40,
+          "end_line": 55,
+          "symbol_or_node_id": "verifyOtp",
+          "original_evidence_level": "E1_DIRECT_CODE",
+          "canonical_evidence_level": "E1_DIRECT_CODE",
+          "evidence_summary": "recordUserLogin is called before jwt.sign and the JSON response is returned.",
+          "source_request_id": "semantic_pack_001_part_01",
+          "source_semantic_pack_id": "semantic_pack_001",
+          "validation_status": "VALID",
+          "redaction_applied": false
+        },
+        {
+          "evidence_id": "evidence_9ab737dbb14ea2f7",
+          "chunk_id": "chunk_0a63a7353ed30f15",
+          "file_path": "frontend/src/context/AuthContext.jsx",
+          "start_line": 69,
+          "end_line": 99,
+          "symbol_or_node_id": "loginWithGoogle",
+          "original_evidence_level": "E1_DIRECT_CODE",
+          "canonical_evidence_level": "E1_DIRECT_CODE",
+          "evidence_summary": "Firebase popup is attempted first; if it fails, a fallback Google profile is synthesized.",
+          "source_request_id": "semantic_pack_001_part_01",
+          "source_semantic_pack_id": "semantic_pack_001",
+          "validation_status": "VALID",
+          "redaction_applied": false
+        },
+        {
+          "evidence_id": "evidence_b1e7991fff1d9499",
+          "chunk_id": "chunk_62cf3d9f404a5d02",
+          "file_path": "backend/server.js",
+          "start_line": 29,
+          "end_line": 33,
+          "symbol_or_node_id": "app.use routes",
+          "original_evidence_level": "E1_DIRECT_CODE",
+          "canonical_evidence_level": "E1_DIRECT_CODE",
+          "evidence_summary": "Backend mounts auth routes under /api/auth and user routes under /api/user.",
+          "source_request_id": "semantic_pack_001_part_01",
+          "source_semantic_pack_id": "semantic_pack_001",
+          "validation_status": "VALID",
+          "redaction_applied": false
+        },
+        {
+          "evidence_id": "evidence_c5c358fac6853579",
+          "chunk_id": "chunk_0a63a7353ed30f15",
+          "file_path": "frontend/src/context/AuthContext.jsx",
+          "start_line": 52,
+          "end_line": 107,
+          "symbol_or_node_id": "loginWithGoogle",
+          "original_evidence_level": "E1_DIRECT_CODE",
+          "canonical_evidence_level": "E1_DIRECT_CODE",
+          "evidence_summary": "Google sign-in flow opens Firebase popup or falls back to a mock profile and posts it to the backend.",
+          "source_request_id": "semantic_pack_001_part_01",
+          "source_semantic_pack_id": "semantic_pack_001",
+          "validation_status": "VALID",
+          "redaction_applied": false
+        },
+        {
+          "evidence_id": "evidence_dd2605b3bc15f918",
+          "chunk_id": "chunk_145cf58000abc4b5",
+          "file_path": "backend/services/otpService.js",
+          "start_line": 24,
+          "end_line": 75,
+          "symbol_or_node_id": "createAndSendOtp",
+          "original_evidence_level": "E1_DIRECT_CODE",
+          "canonical_evidence_level": "E1_DIRECT_CODE",
+          "evidence_summary": "OTP creation and SMS dispatch behavior is implemented in the backend service.",
+          "source_request_id": "semantic_pack_001_part_01",
+          "source_semantic_pack_id": "semantic_pack_001",
+          "validation_status": "VALID",
+          "redaction_applied": false
+        },
+        {
+          "evidence_id": "evidence_f3eed009db6cc8a1",
+          "chunk_id": "chunk_e7ae8eb1344417dd",
+          "file_path": "frontend/src/context/WeatherContext.jsx",
+          "start_line": 69,
+          "end_line": 139,
+          "symbol_or_node_id": "loadWeather/addSavedLocation",
+          "original_evidence_level": "E1_DIRECT_CODE",
+          "canonical_evidence_level": "E1_DIRECT_CODE",
+          "evidence_summary": "Weather load and history sync behavior in the UI context matches the repository's documented dashboard flow.",
+          "source_request_id": "semantic_pack_001_part_01",
+          "source_semantic_pack_id": "semantic_pack_001",
+          "validation_status": "VALID",
+          "redaction_applied": false
+        },
+        {
+          "evidence_id": "evidence_fe35ad94d379746b",
+          "chunk_id": "chunk_4327ecf70ef432e5",
+          "file_path": "backend/services/firebaseDbService.js",
+          "start_line": 17,
+          "end_line": 51,
+          "symbol_or_node_id": "recordUserLogin",
+          "original_evidence_level": "E1_DIRECT_CODE",
+          "canonical_evidence_level": "E1_DIRECT_CODE",
+          "evidence_summary": "User profile data is normalized by user id/mobile/email and stored in Firebase users path.",
+          "source_request_id": "semantic_pack_001_part_01",
+          "source_semantic_pack_id": "semantic_pack_001",
+          "validation_status": "VALID",
+          "redaction_applied": false
+        }
+      ]
+    }
+  ],
+  "fix_first_flaw_ids": [
+    "flaw_01"
+  ],
+  "candidate_dispositions": [
+    {
+      "source_insight_id": "insight_02b58588c6045a95",
+      "decision": "PUBLISHED",
+      "published_flaw_id": "flaw_01",
+      "reason": "The candidate contributes to an evidence-backed published business flaw."
+    },
+    {
+      "source_insight_id": "insight_e693e0a9e7663821",
+      "decision": "PUBLISHED",
+      "published_flaw_id": "flaw_01",
+      "reason": "The candidate contributes to an evidence-backed published business flaw."
+    }
+  ],
+  "component_map": [
+    {
+      "component_id": "component_ec945e43b03cf99b",
+      "component_name": "interactive application (1 path)",
+      "component_type": "INTERACTIVE_APPLICATION",
+      "component_reachability": {
+        "llm_assertions": [],
+        "canonical_value": "PRODUCTION_ENTRYPOINT",
+        "canonicalization_status": "VERIFIED",
+        "semantic_status": "OBSERVED",
+        "canonicalization_reason": "Component reachability is derived from the canonical reachability of its member paths.",
+        "rule_ids": [
+          "COMPONENT_REACHABILITY_FROM_MEMBER_PATHS"
+        ],
+        "evidence_refs": [
+          "evidence_32851f7339bc4fdf",
+          "evidence_a0be9395e1a52eb5",
+          "evidence_b07d63e2b1f7a90a",
+          "evidence_244ad014cb4ecd07",
+          "evidence_7528e2840a9c0885",
+          "evidence_de02c1b69abe0e16",
+          "evidence_1e1ebeaecb6e7606",
+          "evidence_f35b2fbc22fb0379",
+          "evidence_6ccb05b577884ff7",
+          "evidence_2f227be5f8c0ce77",
+          "evidence_91431c6adfe879da",
+          "evidence_469e95db1c437a5a",
+          "evidence_5fe10a24323c063d",
+          "evidence_af4de62f27f10dba",
+          "evidence_f09860ce87ce5354",
+          "evidence_af854957a8d77cfc",
+          "evidence_d5f1d18681d61a61",
+          "evidence_a92b7cc6e086788b",
+          "evidence_aa6b4bee555bd565",
+          "evidence_dfda71479915bc3c",
+          "evidence_a266270d0a18d86e",
+          "evidence_fdc934d6d97f91a1",
+          "evidence_8b3ce5409e9a33e6",
+          "evidence_63491a5dafb8d8c9",
+          "evidence_ac7ef14faf5b6988",
+          "evidence_53198207f27c03a2",
+          "evidence_078da843a2fccd24",
+          "evidence_af66a1ece3084b44",
+          "evidence_3a74d0f3e8e7fb21"
+        ],
+        "canonical_confidence": {
+          "score": 78,
+          "label": "MEDIUM",
+          "components": {
+            "evidence_strength": 40,
+            "path_completeness": 25,
+            "independent_corroboration": 0,
+            "reachability_confidence": 0,
+            "evidence_integrity": 0
+          },
+          "reasons": [
+            "Component reachability is derived from the canonical reachability of its member paths."
+          ],
+          "caps_applied": []
+        }
+      },
+      "component_relationship_to_primary_application": "PRIMARY",
+      "file_paths": [
+        "frontend/src/components/3d/CameraParallax.jsx",
+        "frontend/src/components/3d/WeatherCanvas.jsx",
+        "frontend/src/components/3d/WeatherLighting.jsx",
+        "frontend/src/components/3d/scenes/ClearScene.jsx",
+        "frontend/src/components/3d/scenes/NightScene.jsx",
+        "frontend/src/components/3d/scenes/RainScene.jsx",
+        "frontend/src/components/ui/HourlyStrip.jsx"
+      ],
+      "graph_node_ids": [
+        "chunk_c669fdb1bfea8993",
+        "chunk_9b1229c8a3be73fc",
+        "chunk_e10b9bd1e9a2dcec",
+        "chunk_71dce3e083d3e2f3",
+        "chunk_31ac415924fd74bc",
+        "chunk_dc750088eab0a4b0",
+        "chunk_5274f27ba0339de8",
+        "chunk_62372938d569665e",
+        "chunk_24088e726db00397",
+        "chunk_22b500be9f3d4c3c"
+      ],
+      "entrypoint_ids": [
+        "entrypoint_c1645375188ef65c",
+        "entrypoint_ba65296c108dd572",
+        "entrypoint_ae6100027b63f684"
+      ],
+      "normalized_path_ids": [
+        "business_path_484359b5769a0f2b"
+      ],
+      "canonical_confidence": {
+        "score": 90,
+        "label": "HIGH",
+        "components": {
+          "evidence_strength": 27,
+          "path_completeness": 20,
+          "independent_corroboration": 5,
+          "reachability_confidence": 10,
+          "evidence_integrity": 10
+        },
+        "reasons": [
+          "The component contains directly evidenced interactive UI code and does not own a network route."
+        ],
+        "caps_applied": []
+      },
+      "evidence_refs": [
+        "evidence_32851f7339bc4fdf",
+        "evidence_a0be9395e1a52eb5",
+        "evidence_b07d63e2b1f7a90a",
+        "evidence_244ad014cb4ecd07",
+        "evidence_7528e2840a9c0885",
+        "evidence_de02c1b69abe0e16",
+        "evidence_1e1ebeaecb6e7606",
+        "evidence_f35b2fbc22fb0379",
+        "evidence_6ccb05b577884ff7",
+        "evidence_2f227be5f8c0ce77",
+        "evidence_91431c6adfe879da",
+        "evidence_469e95db1c437a5a",
+        "evidence_5fe10a24323c063d",
+        "evidence_af4de62f27f10dba",
+        "evidence_f09860ce87ce5354",
+        "evidence_af854957a8d77cfc",
+        "evidence_d5f1d18681d61a61",
+        "evidence_a92b7cc6e086788b",
+        "evidence_aa6b4bee555bd565",
+        "evidence_dfda71479915bc3c",
+        "evidence_a266270d0a18d86e",
+        "evidence_fdc934d6d97f91a1",
+        "evidence_8b3ce5409e9a33e6",
+        "evidence_63491a5dafb8d8c9",
+        "evidence_ac7ef14faf5b6988",
+        "evidence_53198207f27c03a2",
+        "evidence_078da843a2fccd24",
+        "evidence_af66a1ece3084b44",
+        "evidence_3a74d0f3e8e7fb21"
+      ]
+    },
+    {
+      "component_id": "component_4a9dc4f6a98dcea0",
+      "component_name": "full stack application (1 path)",
+      "component_type": "FULL_STACK_APPLICATION",
+      "component_reachability": {
+        "llm_assertions": [],
+        "canonical_value": "PRODUCTION_ENTRYPOINT",
+        "canonicalization_status": "VERIFIED",
+        "semantic_status": "OBSERVED",
+        "canonicalization_reason": "Component reachability is derived from the canonical reachability of its member paths.",
+        "rule_ids": [
+          "COMPONENT_REACHABILITY_FROM_MEMBER_PATHS"
+        ],
+        "evidence_refs": [
+          "evidence_c5c358fac6853579",
+          "evidence_84edae2785b06db8",
+          "evidence_b1e7991fff1d9499",
+          "evidence_355797964daba6df",
+          "evidence_fb62abed37d47ee2",
+          "evidence_fe35ad94d379746b",
+          "evidence_1dd3f096a9254731",
+          "evidence_a2b7e5391e9aec62",
+          "evidence_068b77f66e5e1233",
+          "evidence_014a734d891d1692",
+          "evidence_a191cdcd14ccf61f",
+          "evidence_c6f52ac48f2826d2",
+          "evidence_280d6346bdfcf5eb",
+          "evidence_46d300b94957d697",
+          "evidence_9ab737dbb14ea2f7",
+          "evidence_fb4d19a6a036e609",
+          "evidence_62624b1973f1277b",
+          "evidence_922998d7d7a1bcdd",
+          "evidence_734188545d2bb3e1",
+          "evidence_9435b5494945e3aa",
+          "evidence_746906703379976b",
+          "evidence_7262050ebf3599e2",
+          "evidence_3404a0121ead97c3",
+          "evidence_fb1ed8b05ec90dac",
+          "evidence_4feea398d264c4e5",
+          "evidence_7499d29f8aacf6b0",
+          "evidence_492fd709b847bc1d",
+          "evidence_1ef0df285325be30",
+          "evidence_f60b8d2452728567",
+          "evidence_fd2a41ed4841ed7c",
+          "evidence_660fac48f39380fc",
+          "evidence_dd2605b3bc15f918",
+          "evidence_f3eed009db6cc8a1",
+          "evidence_89117420a1c8279d",
+          "evidence_8be7fdb9c06c7b86",
+          "evidence_8285969f9a38fb1e",
+          "evidence_8cbfce77cd39a120",
+          "evidence_2a29179b2866bb65"
+        ],
+        "canonical_confidence": {
+          "score": 78,
+          "label": "MEDIUM",
+          "components": {
+            "evidence_strength": 40,
+            "path_completeness": 25,
+            "independent_corroboration": 0,
+            "reachability_confidence": 0,
+            "evidence_integrity": 0
+          },
+          "reasons": [
+            "Component reachability is derived from the canonical reachability of its member paths."
+          ],
+          "caps_applied": []
+        }
+      },
+      "component_relationship_to_primary_application": "STANDALONE",
+      "file_paths": [
+        "backend/controllers/authController.js",
+        "backend/javafx/FirebaseBackendController.java",
+        "backend/routes/authRoutes.js",
+        "backend/server.js",
+        "backend/services/firebaseDbService.js",
+        "backend/services/otpService.js",
+        "frontend/src/context/AuthContext.jsx",
+        "frontend/src/context/WeatherContext.jsx",
+        "frontend/src/services/openMeteoApi.js",
+        "frontend/src/utils/otpService.js"
+      ],
+      "graph_node_ids": [
+        "chunk_4327ecf70ef432e5",
+        "chunk_0a63a7353ed30f15",
+        "chunk_23e56d4ae6618b6b",
+        "chunk_145cf58000abc4b5",
+        "chunk_0179c37bba243757",
+        "chunk_739cac2735031e6f"
+      ],
+      "entrypoint_ids": [
+        "entrypoint_6623f031b2e14edb",
+        "entrypoint_1fdc411cdd4b7f83",
+        "entrypoint_e831a33b71464a3c"
+      ],
+      "normalized_path_ids": [
+        "business_path_0c6021d560d72aa8"
+      ],
+      "canonical_confidence": {
+        "score": 86,
+        "label": "HIGH",
+        "components": {
+          "evidence_strength": 40,
+          "path_completeness": 20,
+          "independent_corroboration": 5,
+          "reachability_confidence": 10,
+          "evidence_integrity": 10
+        },
+        "reasons": [
+          "The connected component both defines routes and contains a directly interactive UI surface."
+        ],
+        "caps_applied": []
+      },
+      "evidence_refs": [
+        "evidence_c5c358fac6853579",
+        "evidence_84edae2785b06db8",
+        "evidence_b1e7991fff1d9499",
+        "evidence_355797964daba6df",
+        "evidence_fb62abed37d47ee2",
+        "evidence_fe35ad94d379746b",
+        "evidence_1dd3f096a9254731",
+        "evidence_a2b7e5391e9aec62",
+        "evidence_068b77f66e5e1233",
+        "evidence_014a734d891d1692",
+        "evidence_a191cdcd14ccf61f",
+        "evidence_c6f52ac48f2826d2",
+        "evidence_280d6346bdfcf5eb",
+        "evidence_46d300b94957d697",
+        "evidence_9ab737dbb14ea2f7",
+        "evidence_fb4d19a6a036e609",
+        "evidence_62624b1973f1277b",
+        "evidence_922998d7d7a1bcdd",
+        "evidence_734188545d2bb3e1",
+        "evidence_9435b5494945e3aa",
+        "evidence_746906703379976b",
+        "evidence_7262050ebf3599e2",
+        "evidence_3404a0121ead97c3",
+        "evidence_fb1ed8b05ec90dac",
+        "evidence_4feea398d264c4e5",
+        "evidence_7499d29f8aacf6b0",
+        "evidence_492fd709b847bc1d",
+        "evidence_1ef0df285325be30",
+        "evidence_f60b8d2452728567",
+        "evidence_fd2a41ed4841ed7c",
+        "evidence_660fac48f39380fc",
+        "evidence_dd2605b3bc15f918",
+        "evidence_f3eed009db6cc8a1",
+        "evidence_89117420a1c8279d",
+        "evidence_8be7fdb9c06c7b86",
+        "evidence_8285969f9a38fb1e",
+        "evidence_8cbfce77cd39a120",
+        "evidence_2a29179b2866bb65"
+      ]
+    },
+    {
+      "component_id": "component_70d0234ffa76f607",
+      "component_name": "interactive application (1 path)",
+      "component_type": "INTERACTIVE_APPLICATION",
+      "component_reachability": {
+        "llm_assertions": [],
+        "canonical_value": "PRODUCTION_ENTRYPOINT",
+        "canonicalization_status": "VERIFIED",
+        "semantic_status": "OBSERVED",
+        "canonicalization_reason": "Component reachability is derived from the canonical reachability of its member paths.",
+        "rule_ids": [
+          "COMPONENT_REACHABILITY_FROM_MEMBER_PATHS"
+        ],
+        "evidence_refs": [
+          "evidence_1e254b64dc5fcfd5",
+          "evidence_8febaff33bf3daed",
+          "evidence_f65fe45f8676ca51",
+          "evidence_95ad3577dad3e95f",
+          "evidence_f252fb1fc35c4297",
+          "evidence_f7b291acb91956e4",
+          "evidence_d14645fd0096a3ef",
+          "evidence_71e081058b83613d",
+          "evidence_c3983143a92e8030",
+          "evidence_1637c7358e993afb",
+          "evidence_808d2f148886df82",
+          "evidence_9c0de7b583415c53",
+          "evidence_3002ef166f1cd070",
+          "evidence_bf27dc1379b2ca16",
+          "evidence_6b7ee85cec5880e5",
+          "evidence_7a8faebc4c1ce4f5",
+          "evidence_5f71de11ce5fc852",
+          "evidence_296c1faca85c9a39",
+          "evidence_b51cc229096de2f9",
+          "evidence_cf6f37d00e00a7bb",
+          "evidence_6ed7c7bafded2046",
+          "evidence_f6e0d460b6c67635",
+          "evidence_81449ca2f9d09748",
+          "evidence_9ebf3393334ce058",
+          "evidence_a9ccfffc3fae9548",
+          "evidence_6c111fa8d249bacf",
+          "evidence_a6c480ac854acdd8",
+          "evidence_a1a68d20d43a00fb",
+          "evidence_39abc0d124f380ec",
+          "evidence_ca4af40fa1b72bdc",
+          "evidence_6dcf8fda33e0625a"
+        ],
+        "canonical_confidence": {
+          "score": 78,
+          "label": "MEDIUM",
+          "components": {
+            "evidence_strength": 40,
+            "path_completeness": 25,
+            "independent_corroboration": 0,
+            "reachability_confidence": 0,
+            "evidence_integrity": 0
+          },
+          "reasons": [
+            "Component reachability is derived from the canonical reachability of its member paths."
+          ],
+          "caps_applied": []
+        }
+      },
+      "component_relationship_to_primary_application": "STANDALONE",
+      "file_paths": [
+        "frontend/src/components/ui/AuthModal.jsx",
+        "frontend/src/services/firebasePhoneAuth.js",
+        "frontend/src/services/freeSmsService.js"
+      ],
+      "graph_node_ids": [
+        "chunk_a9cb17b110e4a06c",
+        "chunk_8137d37bcf6353ae",
+        "chunk_033a4e90d07accf0",
+        "chunk_428e3b35843ce45d",
+        "chunk_af1435d58fe39d0b",
+        "chunk_d1a95a0f34e7cdfa",
+        "chunk_8b078bfe8c37b2ca"
+      ],
+      "entrypoint_ids": [
+        "entrypoint_1db13b0760964d82",
+        "entrypoint_880f9aa6294b9b76",
+        "entrypoint_6bb5b1a861efee8a"
+      ],
+      "normalized_path_ids": [
+        "business_path_1e635cdf5771b9ae"
+      ],
+      "canonical_confidence": {
+        "score": 90,
+        "label": "HIGH",
+        "components": {
+          "evidence_strength": 21,
+          "path_completeness": 20,
+          "independent_corroboration": 5,
+          "reachability_confidence": 10,
+          "evidence_integrity": 10
+        },
+        "reasons": [
+          "The component contains directly evidenced interactive UI code and does not own a network route."
+        ],
+        "caps_applied": []
+      },
+      "evidence_refs": [
+        "evidence_1e254b64dc5fcfd5",
+        "evidence_8febaff33bf3daed",
+        "evidence_f65fe45f8676ca51",
+        "evidence_95ad3577dad3e95f",
+        "evidence_f252fb1fc35c4297",
+        "evidence_f7b291acb91956e4",
+        "evidence_d14645fd0096a3ef",
+        "evidence_71e081058b83613d",
+        "evidence_c3983143a92e8030",
+        "evidence_1637c7358e993afb",
+        "evidence_808d2f148886df82",
+        "evidence_9c0de7b583415c53",
+        "evidence_3002ef166f1cd070",
+        "evidence_bf27dc1379b2ca16",
+        "evidence_6b7ee85cec5880e5",
+        "evidence_7a8faebc4c1ce4f5",
+        "evidence_5f71de11ce5fc852",
+        "evidence_296c1faca85c9a39",
+        "evidence_b51cc229096de2f9",
+        "evidence_cf6f37d00e00a7bb",
+        "evidence_6ed7c7bafded2046",
+        "evidence_f6e0d460b6c67635",
+        "evidence_81449ca2f9d09748",
+        "evidence_9ebf3393334ce058",
+        "evidence_a9ccfffc3fae9548",
+        "evidence_6c111fa8d249bacf",
+        "evidence_a6c480ac854acdd8",
+        "evidence_a1a68d20d43a00fb",
+        "evidence_39abc0d124f380ec",
+        "evidence_ca4af40fa1b72bdc",
+        "evidence_6dcf8fda33e0625a"
+      ]
+    }
+  ],
+  "coverage": {
+    "schema_version": "shipready.business_path_coverage.v1",
+    "generated_at": "2026-08-16T03:28:22.627564+00:00",
+    "repository_id": "repository_ae6e29beaaedcf4f",
+    "scan": {
+      "completeness": "COMPLETE",
+      "expected_request_ids": [
+        "semantic_pack_001_part_01",
+        "semantic_pack_001_part_02"
+      ],
+      "completed_request_ids": [
+        "semantic_pack_001_part_01",
+        "semantic_pack_001_part_02"
+      ],
+      "missing_requests": [],
+      "semantic_pack_ids": [
+        "semantic_pack_001"
+      ],
+      "repository_wide_conclusions_allowed": false,
+      "qualification_message": "Repository-wide absence conclusions are prohibited: 26 significant production source files are not represented by normalized paths."
+    },
+    "coverage": {
+      "source_fragment_count": 3,
+      "normalized_path_count": 3,
+      "component_count": 3,
+      "reachable_path_count": 3,
+      "internal_only_path_count": 0,
+      "test_demo_path_count": 0,
+      "unknown_reachability_path_count": 0,
+      "valid_evidence_count": 98,
+      "repaired_evidence_count": 0,
+      "invalid_evidence_count": 0,
+      "files_represented": [
+        "backend/controllers/authController.js",
+        "backend/javafx/FirebaseBackendController.java",
+        "backend/routes/authRoutes.js",
+        "backend/server.js",
+        "backend/services/firebaseDbService.js",
+        "backend/services/otpService.js",
+        "frontend/src/components/3d/CameraParallax.jsx",
+        "frontend/src/components/3d/WeatherCanvas.jsx",
+        "frontend/src/components/3d/WeatherLighting.jsx",
+        "frontend/src/components/3d/scenes/ClearScene.jsx",
+        "frontend/src/components/3d/scenes/NightScene.jsx",
+        "frontend/src/components/3d/scenes/RainScene.jsx",
+        "frontend/src/components/ui/AuthModal.jsx",
+        "frontend/src/components/ui/HourlyStrip.jsx",
+        "frontend/src/context/AuthContext.jsx",
+        "frontend/src/context/WeatherContext.jsx",
+        "frontend/src/services/firebasePhoneAuth.js",
+        "frontend/src/services/freeSmsService.js",
+        "frontend/src/services/openMeteoApi.js",
+        "frontend/src/utils/otpService.js"
+      ],
+      "uncovered_files": [
+        "backend/controllers/userController.js",
+        "backend/javafx/WeatherDashboardJavaFX.java",
+        "backend/javafx/WeatherDesktopApp.java",
+        "backend/routes/userRoutes.js",
+        "frontend/index.html",
+        "frontend/src/App.css",
+        "frontend/src/App.jsx",
+        "frontend/src/components/3d/scenes/CloudScene.jsx",
+        "frontend/src/components/3d/scenes/ErrorScene.jsx",
+        "frontend/src/components/3d/scenes/FogScene.jsx",
+        "frontend/src/components/3d/scenes/SnowScene.jsx",
+        "frontend/src/components/ui/DailyForecast.jsx",
+        "frontend/src/components/ui/Header.jsx",
+        "frontend/src/components/ui/HeroWeather.jsx",
+        "frontend/src/components/ui/SavedLocationsDrawer.jsx",
+        "frontend/src/components/ui/ShareModal.jsx",
+        "frontend/src/components/ui/SmsToast.jsx",
+        "frontend/src/components/ui/WeatherAlerts.jsx",
+        "frontend/src/components/ui/WeatherMetrics.jsx",
+        "frontend/src/index.css",
+        "frontend/src/main.jsx",
+        "frontend/src/services/backendApi.js",
+        "frontend/src/services/firebaseConfig.js",
+        "frontend/src/services/wmoCodes.js",
+        "frontend/src/utils/feelsLikeLogic.js",
+        "frontend/vite.config.js",
+        "generate_pdf.py",
+        "services/firebaseService.js",
+        "services/otpService.js",
+        "services/smsService.js",
+        "services/weatherService.js"
+      ],
+      "coverage_warnings": [
+        "Material source coverage gate: 19/45 significant source files represented (42.2%); repository-wide absence conclusions are prohibited."
+      ]
+    },
+    "component_coverage": [
+      {
+        "component_id": "component_ec945e43b03cf99b",
+        "component_type": "INTERACTIVE_APPLICATION",
+        "reachability": "PRODUCTION_ENTRYPOINT",
+        "path_count": 1,
+        "file_count": 7
+      },
+      {
+        "component_id": "component_4a9dc4f6a98dcea0",
+        "component_type": "FULL_STACK_APPLICATION",
+        "reachability": "PRODUCTION_ENTRYPOINT",
+        "path_count": 1,
+        "file_count": 10
+      },
+      {
+        "component_id": "component_70d0234ffa76f607",
+        "component_type": "INTERACTIVE_APPLICATION",
+        "reachability": "PRODUCTION_ENTRYPOINT",
+        "path_count": 1,
+        "file_count": 3
+      }
+    ],
+    "missing_request_ids": [],
+    "repository_wide_conclusions_allowed": false
+  },
+  "governance_repairs": [
+    {
+      "type": "CUSTOMER_LANGUAGE_MADE_DECISIVE",
+      "flaw_id": "flaw_01",
+      "field": "business_impact.business_downside"
+    }
+  ],
+  "input_hashes": {
+    "selected_insights": "7278c81beb78062b1b6a05b83c582dec039bc923edda50902cbbf93e84c6524f",
+    "investigation_gaps": "a60fc5e7e4749c65b391f2d21af0aaa5dcd9df4d5858253911dac5f0989dc82d",
+    "selection_summary": "f00339be462bfc6f4b405464a55d67858255224d185cb2879e22940e71273bf5",
+    "normalized_paths": "28ed91d9e2cfc766567cda41eafc9cd889a540a2595254eafe99e2516b965e3c",
+    "coverage": "372183bb87eb8898cad64acf63e6dc8288f6bd75c6132cd89788a0e39ea6a8d1",
+    "resolved_graph": "8af7250d9837b70bb0a30b423375b0107d42b62af9c7b21e8db961fd5dbde023",
+    "prepared_code": "6624d7d9fc40bb80a4ddf362c1c3b53d6b87bd558fc970e1c1cb2e67835154cf",
+    "taxonomy_if_present": "93452175b35bd74bc9043766324c8442607e920a70548115c32a0b09a33673e3"
+  },
+  "structural_hotspots": []
+}

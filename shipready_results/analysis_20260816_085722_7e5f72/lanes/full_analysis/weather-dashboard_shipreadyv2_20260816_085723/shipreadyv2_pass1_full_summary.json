@@ -1,0 +1,32 @@
+{
+  "run_id": "full_20260816_085725",
+  "completed_at": "2026-08-16T03:28:21.881104+00:00",
+  "completion_status": "COMPLETE",
+  "all_requests_terminal": true,
+  "partial_results_accepted": true,
+  "max_concurrent_requests": 2,
+  "max_attempts_per_request": 1,
+  "input_path": "C:\\Users\\hp\\Downloads\\weather-dashboard\\shipready_results\\analysis_20260816_085722_7e5f72\\lanes\\full_analysis\\weather-dashboard_shipreadyv2_20260816_085723\\shipreadyv2_pass1_llm_inputs.jsonl",
+  "runner_version": "full-v3-parallel-partial-20260717",
+  "model": "gpt-5.4-mini",
+  "reasoning_effort": "low",
+  "total_prepared_requests": 2,
+  "reused_request_ids": [],
+  "reused_count": 0,
+  "selected_request_ids": [
+    "semantic_pack_001_part_01",
+    "semantic_pack_001_part_02"
+  ],
+  "successful_request_ids": [
+    "semantic_pack_001_part_01",
+    "semantic_pack_001_part_02"
+  ],
+  "failed_request_ids": [],
+  "successful_count": 2,
+  "failed_count": 0,
+  "results_path": "C:\\Users\\hp\\Downloads\\weather-dashboard\\shipready_results\\analysis_20260816_085722_7e5f72\\lanes\\full_analysis\\weather-dashboard_shipreadyv2_20260816_085723\\shipreadyv2_pass1_full_results.jsonl",
+  "trace_path": "C:\\Users\\hp\\Downloads\\weather-dashboard\\shipready_results\\analysis_20260816_085722_7e5f72\\lanes\\full_analysis\\weather-dashboard_shipreadyv2_20260816_085723\\shipreadyv2_pass1_full_trace.jsonl",
+  "errors_path": "C:\\Users\\hp\\Downloads\\weather-dashboard\\shipready_results\\analysis_20260816_085722_7e5f72\\lanes\\full_analysis\\weather-dashboard_shipreadyv2_20260816_085723\\shipreadyv2_pass1_full_errors.jsonl",
+  "artifacts_directory": "C:\\Users\\hp\\Downloads\\weather-dashboard\\shipready_results\\analysis_20260816_085722_7e5f72\\lanes\\full_analysis\\weather-dashboard_shipreadyv2_20260816_085723\\shipreadyv2_pass1_full_artifacts",
+  "risk_trigger_boundary": "No risk-trigger registry was injected and no trigger fields are permitted."
+}

@@ -1,0 +1,62 @@
+{
+  "schema_version": "shipreadyv2.fast_lane_profile.v1",
+  "repository_name": "weather-dashboard",
+  "workspace_root": "C:\\Users\\hp\\Downloads\\weather-dashboard",
+  "files_scanned": 51,
+  "language_counts": {
+    "css": 2,
+    "html": 1,
+    "java": 3,
+    "javascript": 20,
+    "jsx": 24,
+    "python": 1
+  },
+  "language_percentages": {
+    "css": 3.92,
+    "html": 1.96,
+    "java": 5.88,
+    "javascript": 39.22,
+    "jsx": 47.06,
+    "python": 1.96
+  },
+  "application_shapes": [
+    {
+      "shape": "API_SERVICE",
+      "confidence": "HIGH",
+      "evidence": [
+        "6 API/controller signals"
+      ]
+    },
+    {
+      "shape": "WEB_FRONTEND",
+      "confidence": "HIGH",
+      "evidence": [
+        "26 page/UI signals"
+      ]
+    }
+  ],
+  "top_role_hints": {
+    "ui_component_file": 24,
+    "service_file": 13,
+    "auth_related_file": 5,
+    "api_or_controller_file": 4,
+    "react_hook_or_state_file": 2,
+    "api_route_file": 2,
+    "css_stylesheet": 2,
+    "persistence_related_file": 1,
+    "entry_or_index_page": 1,
+    "has_script_asset": 1,
+    "html_page": 1
+  },
+  "entity_kind_counts": {
+    "function": 75,
+    "css_selector": 21,
+    "component": 21,
+    "css_at_rule": 2,
+    "html_document": 1,
+    "html_meta": 1,
+    "html_title": 1,
+    "hook": 1
+  },
+  "interpretation_boundary": "Fast deterministic profile. Application shapes are evidence-backed hints, not final business classifications."
+}
